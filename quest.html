@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: Sociologia da Saúde</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f9;
+            --text-color: #333;
+            --container-bg: #fff;
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --option-bg: #e7e9eb;
+            --option-hover: #d4d6d9;
+            --border-color: #ddd;
+            --error-color: #f44336;
+            --justification-bg: #e3f2fd;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --container-bg: #1e1e1e;
+            --primary-color: #bb86fc;
+            --primary-hover: #9c27b0;
+            --option-bg: #2c2c2c;
+            --option-hover: #3c3c3c;
+            --border-color: #444;
+            --justification-bg: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            max-width: 800px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1, h2, h3 { margin-top: 0; }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: var(--primary-color);
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        button:hover { background-color: var(--primary-hover); }
+
+        .theme-toggle {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--option-bg);
+        }
+
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--error-color);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            background-color: var(--option-bg);
+            color: var(--text-color);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.2s;
+        }
+
+        .option:hover:not(:disabled) { background-color: var(--option-hover); }
+        .option.correct { background-color: #4CAF50; color: white; border-color: #4CAF50; }
+        .option.wrong { background-color: var(--error-color); color: white; border-color: var(--error-color); }
+        .option:disabled { cursor: not-allowed; }
+
+        .justification {
+            background-color: var(--justification-bg);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .hidden { display: none; }
+        .progress { font-size: 14px; margin-bottom: 10px; color: gray; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Quiz Sociologia</h1>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓 Modo Noturno</button>
+    </div>
+
+    <div id="start-screen">
+        <h2>Plataforma de Avaliação</h2>
+        <p>São 40 questões baseadas nos textos de Anthony Giddens e David Tavares. Você terá 1 minuto para responder cada questão.</p>
+        <button onclick="startQuiz()">Iniciar Quiz</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div class="header">
+            <span class="progress" id="progress-text">Questão 1 de 40</span>
+            <span class="timer" id="timer-text">01:00</span>
+        </div>
+        <h3 id="question-text">Pergunta</h3>
+        <div class="options" id="options-container"></div>
+        
+        <div class="justification" id="justification-container">
+            <strong>Justificativa:</strong> <span id="justification-text"></span>
+        </div>
+
+        <button id="next-btn" class="hidden" onclick="nextQuestion()">Próxima Questão</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Fim do Quiz!</h2>
+        <p>Sua pontuação final é: <strong id="score-text"></strong> de 40.</p>
+        <button onclick="location.reload()">Reiniciar Quiz</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        // QUESTÕES BASEADAS EM GIDDENS (Cap. 10)
+        {
+            q: "Segundo o modelo biomédico da saúde abordado por Giddens, como a doença é conceituada?",
+            options: [
+                "Como uma construção social moldada pelo ambiente.",
+                "Como um desarranjo objetivo no corpo humano causado por um agente biológico específico.",
+                "Como um desequilíbrio espiritual e mental do indivíduo.",
+                "Como um reflexo das escolhas alimentares e do estilo de vida moderno."
+            ],
+            answer: 1,
+            justification: "O modelo biomédico baseia-se na teoria dos germes, enxergando a doença como uma patologia biológica objetiva no corpo, tratada isoladamente da mente e do contexto social."
+        },
+        {
+            q: "Sobre a anorexia, Giddens argumenta que ela é primariamente:",
+            options: [
+                "Uma doença puramente genética comum em países em desenvolvimento.",
+                "Uma patologia ligada ao isolamento social em idosos.",
+                "Uma doença do corpo intimamente ligada à pressão social e cultural nas sociedades modernas para ter um corpo magro.",
+                "Um reflexo da escassez de alimentos em sociedades de superabundância."
+            ],
+            answer: 2,
+            justification: "A anorexia reflete a 'socialização da natureza', onde a dieta e o padrão de beleza magro (uma construção social) geram transtornos alimentares, afetando principalmente mulheres em países ricos."
+        },
+        {
+            q: "O que o sociólogo Ivan Illich definiu como 'iatrogênese clínica'?",
+            options: [
+                "A medicalização do parto e da gravidez.",
+                "O surgimento da medicina alternativa.",
+                "A influência da dieta na saúde mental.",
+                "Doenças ou agravamentos causados pelo próprio tratamento médico."
+            ],
+            answer: 3,
+            justification: "Illich critica a medicina moderna apontando que muitas vezes o tratamento médico deixa o paciente pior ou cria novas condições, o que ele chama de iatrogênese (doença autocausada clinicamente)."
+        },
+        {
+            q: "De acordo com o funcionalista Talcott Parsons, o que caracteriza o 'papel de doente'?",
+            options: [
+                "A exclusão total do paciente da sociedade, sem direito a tratamento.",
+                "Padrões de comportamento em que o indivíduo é isento de suas obrigações normais, mas deve buscar recuperar a saúde.",
+                "A culpabilização do indivíduo por ter contraído a doença.",
+                "O direito de questionar a autoridade médica baseado em conhecimento leigo."
+            ],
+            answer: 1,
+            justification: "Parsons argumenta que o papel de doente dá direitos (afastamento de obrigações) e deveres (tentar melhorar e seguir ordens médicas) para minimizar disfunções na sociedade."
+        },
+        {
+            q: "Qual autor refinou o 'papel de doente' de Parsons dividindo-o em três tipos (condicional, incondicionalmente legítimo e ilegítimo)?",
+            options: ["Michel Foucault", "Talcott Parsons", "Freidson", "Ivan Illich"],
+            answer: 2,
+            justification: "Freidson propôs que a experiência do doente varia. Doenças incuráveis têm um papel incondicionalmente legítimo, enquanto condições estigmatizadas (ex: alcoolismo) podem ter um papel ilegítimo."
+        },
+        {
+            q: "Como o 'Relatório Black' (Reino Unido) explicou as desigualdades na saúde entre as classes sociais?",
+            options: [
+                "Focando no estilo de vida voluntário, como dieta e tabagismo.",
+                "Focando em fatores genéticos das diferentes classes.",
+                "Enfatizando explicações materialistas e estruturais, como pobreza, habitação e condições de trabalho.",
+                "Atribuindo a culpa à falta de educação médica."
+            ],
+            answer: 2,
+            justification: "O Relatório Black concluiu que a privação material e estrutural é a principal responsável pela pior saúde das classes trabalhadoras em comparação com as classes mais ricas."
+        },
+        {
+            q: "O que propõe a tese de Richard Wilkinson sobre 'saúde e coesão social'?",
+            options: [
+                "Os países mais ricos são sempre os mais saudáveis, independente da distribuição de renda.",
+                "Sociedades com distribuição de renda mais igualitária e alta coesão social tendem a ser as mais saudáveis.",
+                "O acesso à medicina genômica é o principal fator de saúde em uma nação.",
+                "A coesão social não tem impacto clínico mensurável."
+            ],
+            answer: 1,
+            justification: "Wilkinson argumenta que não é apenas a riqueza total, mas a desigualdade de renda que prejudica a saúde. Sociedades igualitárias como o Japão têm melhores índices de saúde."
+        },
+        {
+            q: "Qual é a distinção central proposta pelo modelo social da deficiência?",
+            options: [
+                "A diferença entre doença mental e doença física.",
+                "A diferença entre limitação (física/biológica) e deficiência (barreiras sociais).",
+                "A diferença entre tragédia pessoal e fatalidade genética.",
+                "A diferença entre cura médica e cuidados paliativos."
+            ],
+            answer: 1,
+            justification: "A UPIAS definiu 'limitação' como o defeito do corpo e 'deficiência' como a desvantagem causada pelas barreiras de uma sociedade não adaptada, invertendo o modelo biomédico individual."
+        },
+        {
+            q: "Como a emergência da AIDS desafiou os padrões médicos modernos, segundo Giddens?",
+            options: [
+                "Mostrou que as doenças crônicas desapareceram.",
+                "Revelou a eficácia total das vacinas modernas.",
+                "Mostrou que doenças infecciosas fatais ainda poderiam se tornar pandemias, além de expor preconceitos e estigmas sociais profundos.",
+                "Provou que o modelo social da deficiência estava incorreto."
+            ],
+            answer: 2,
+            justification: "A AIDS quebrou a ilusão de que as doenças infecciosas estavam totalmente controladas, e seu início trouxe estigmas intensos ligados ao estilo de vida (ex: 'praga gay')."
+        },
+        {
+            q: "O que Erving Goffman entende por 'estigma'?",
+            options: [
+                "Uma relação de desvalorização onde o indivíduo é desqualificado da aceitação social plena.",
+                "Um erro no diagnóstico biomédico.",
+                "A aceitação pacífica de uma doença crônica.",
+                "O privilégio garantido pelo papel de doente."
+            ],
+            answer: 0,
+            justification: "Para Goffman, estigma é o desfasamento entre as expectativas sociais do que é 'normal' e os atributos do indivíduo, gerando desvalorização e exclusão."
+        },
+        {
+            q: "De acordo com Corbin e Strauss, os doentes crônicos realizam três tipos de 'trabalho' em sua vida diária: o trabalho da doença, o trabalho diário e o trabalho...",
+            options: ["Patológico.", "Biográfico.", "Institucional.", "Genético."],
+            answer: 1,
+            justification: "O 'trabalho biográfico' é o processo de incorporar a doença à narrativa da própria vida e lidar com as mudanças na identidade pessoal."
+        },
+        {
+            q: "Historicamente, o modelo individual da deficiência enxerga a pessoa com limitação sob a ótica de:",
+            options: [
+                "Opressão social.",
+                "Tragédia pessoal e anormalidade médica.",
+                "Identidade coletiva.",
+                "Diversidade cultural."
+            ],
+            answer: 1,
+            justification: "O modelo individual foca na anormalidade corporal e na tragédia da vítima, necessitando da medicina para 'conserto' ou reabilitação, ignorando as barreiras da sociedade."
+        },
+        {
+            q: "Qual é a relação geral entre gênero e mortalidade nas sociedades industrializadas?",
+            options: [
+                "Homens vivem mais, mas têm mais doenças crônicas.",
+                "Mulheres vivem mais tempo do que os homens, embora relatem taxas mais altas de doenças e ansiedade.",
+                "A expectativa de vida é idêntica para ambos os gêneros.",
+                "Homens consultam médicos com muito mais frequência."
+            ],
+            answer: 1,
+            justification: "Mulheres têm maior expectativa de vida, mas adoecem mais (ou reportam mais). Homens sofrem mais de mortes violentas e ignoram sintomas por mais tempo."
+        },
+        {
+            q: "Em sociologia da saúde, o que Michel Foucault criticava em relação ao Estado moderno?",
+            options: [
+                "A total ausência de hospitais públicos.",
+                "O excesso de liberdade reprodutiva.",
+                "A regulação do corpo humano e da sexualidade como uma forma de monitoramento e controle da população.",
+                "A rejeição da tecnologia na medicina."
+            ],
+            answer: 2,
+            justification: "Foucault analisou como o Estado passou a gerenciar a população (biopoder) regulando a saúde, a sexualidade e as condições de vida como recursos da nação."
+        },
+        {
+            q: "A engenharia genética (ex: seleção de embriões) gera temores sociológicos porque pode levar a:",
+            options: [
+                "Uma redução drástica da expectativa de vida.",
+                "Uma 'subclasse biológica', aprofundando o preconceito e resgatando ideais eugênicos.",
+                "A extinção do sistema capitalista.",
+                "Uma total ausência de doenças no mundo em 5 anos."
+            ],
+            answer: 1,
+            justification: "Críticos temem que apenas os ricos possam pagar para 'projetar' filhos sem doenças, criando uma subclasse de pessoas não modificadas que sofrerão discriminação."
+        },
+        {
+            q: "A crítica feminista ao modelo biomédico (como a de Ann Oakley) sobre a gestação argumenta que:",
+            options: [
+                "A gestação deveria ocorrer apenas em casa.",
+                "O parto e a gravidez foram apropriados por especialistas homens e tratados como doenças cheias de risco.",
+                "Não há necessidade de acompanhamento pré-natal.",
+                "A tecnologia ultrassonográfica é irrelevante."
+            ],
+            answer: 1,
+            justification: "Feministas apontam a 'medicalização' do parto, um fenômeno natural que as mulheres perderam o controle para os médicos (tradicionalmente homens) nos hospitais."
+        },
+        {
+            q: "Por que terapias complementares e alternativas estão em ascensão?",
+            options: [
+                "Porque são cientificamente superiores aos antibióticos.",
+                "Porque são subsidiadas pesadamente pelo Estado.",
+                "Como reação ao tratamento despersonalizado da biomedicina e pelo desejo de ser tratado de forma holística.",
+                "Porque erradicaram doenças virais como o HIV."
+            ],
+            answer: 2,
+            justification: "A ascensão da medicina alternativa reflete a insatisfação com a impessoalidade, os efeitos colaterais das drogas ortodoxas e o desejo do paciente de assumir um papel ativo."
+        },
+        {
+            q: "Sobre a medicalização da hiperatividade infantil (TDAH e Ritalina), críticos sociológicos afirmam que:",
+            options: [
+                "A droga não tem efeito biológico nenhum.",
+                "Os médicos converteram a pressão social, a dieta ruim e o estresse da vida moderna em um problema físico tratável com remédios.",
+                "Crianças não podem ter déficits psicológicos reais.",
+                "O transtorno é causado puramente por fatores genéticos."
+            ],
+            answer: 1,
+            justification: "A medicalização transforma tensões sociais e culturais em patologias médicas, usando a 'pílula mágica' em vez de resolver as raízes sociais dos sintomas."
+        },
+        {
+            q: "Nas sociedades pré-modernas, a forma feminina 'gorda/carnuda' era vista como:",
+            options: [
+                "Um símbolo de pobreza extrema.",
+                "Sinal de castigo divino.",
+                "O ideal desejável, muitas vezes associado à riqueza e ao status elevado em contraste com a inanição dos pobres.",
+                "Uma doença crônica a ser erradicada."
+            ],
+            answer: 2,
+            justification: "Diferente de hoje, a gordura sinalizava fartura alimentar (riqueza), enquanto a magreza estava associada à fome e à pobreza."
+        },
+        {
+            q: "Qual conceito é chave para a transição global na área de saúde no mundo desenvolvido?",
+            options: [
+                "Retorno de pandemias de varíola.",
+                "Transição de mortes por doenças crônicas para infecciosas.",
+                "Aumento da taxa de mortalidade infantil.",
+                "Transição epidemiológica: declínio das doenças infecciosas e predomínio das doenças crônicas/degenerativas."
+            ],
+            answer: 3,
+            justification: "As melhorias em saneamento e medicina fizeram com que as pessoas vivessem mais, morrendo hoje majoritariamente de câncer e problemas cardíacos (crônicos) em vez de infecções."
+        },
+        
+        // QUESTÕES BASEADAS EM TAVARES (Cap. 1)
+        {
+            q: "Segundo David Tavares, por que a compreensão da saúde e da doença exige uma análise multidimensional?",
+            options: [
+                "Porque a medicina foca apenas no lucro hospitalar.",
+                "Porque fatores biológicos, sociais, culturais e ambientais interagem, sendo inseparáveis dos contextos sociais em que ocorrem.",
+                "Porque os micro-organismos mudam conforme o comportamento das pessoas.",
+                "Porque a biologia não tem qualquer relevância."
+            ],
+            answer: 1,
+            justification: "Tavares alerta que o modelo exclusivamente biológico cai numa contradição ao ignorar a influência das condições materiais, culturais e relações sociais na saúde e doença."
+        },
+        {
+            q: "A palavra 'Disease' em inglês, na Sociologia da Saúde, refere-se a:",
+            options: [
+                "O reconhecimento social do estado de doença.",
+                "A vivência dos sintomas pelo próprio paciente.",
+                "A doença no sentido anatômico, biológico ou patológico diagnosticado pelo médico.",
+                "A cura espiritual da patologia."
+            ],
+            answer: 2,
+            justification: "Disease = Patologia biológica objetiva. Illness = O mal-estar sentido (experiência subjetiva). Sickness = O reconhecimento social da doença."
+        },
+        {
+            q: "Qual termo inglês descreve as respostas aos sintomas e a experiência subjetiva da doença pelo paciente?",
+            options: ["Disease", "Illness", "Sickness", "Pathology"],
+            answer: 1,
+            justification: "Illness diz respeito ao mal-estar sentido e à experiência subjetiva que o paciente tem dos sintomas no seu dia a dia."
+        },
+        {
+            q: "O conceito de 'Embodiment' (Encorporação) propõe superar a dicotomia entre:",
+            options: [
+                "Saúde pública e privada.",
+                "Mente e corpo / natural e social.",
+                "Médicos e enfermeiros.",
+                "Cura e prevenção."
+            ],
+            answer: 1,
+            justification: "O embodiment reporta-se à experiência humana de estar e ter um corpo inserido socioculturalmente, não separando mente de biologia ou natureza de sociedade."
+        },
+        {
+            q: "Como a pandemia da Covid-19 é vista sob a ótica da sociologia no texto de Tavares?",
+            options: [
+                "Um fenômeno estritamente biológico resolvido em laboratórios.",
+                "Um 'fenômeno social total' que alterou a economia, relações de sociabilidade, trabalho, políticas sociais e desigualdades.",
+                "Um problema de gestão isolada de UTI.",
+                "A prova de que a sociologia não tem papel nas crises biológicas."
+            ],
+            answer: 1,
+            justification: "A pandemia afetou profundamente todas as esferas da vida humana (trabalho, Estado, morte, isolamento), mostrando-se um fenômeno multidimensional."
+        },
+        {
+            q: "Na evolução da disciplina, Robert Strauss (1957) diferenciou a 'sociologia NA medicina' da 'sociologia DA medicina'. O que é a 'sociologia DA medicina'?",
+            options: [
+                "Investigação que serve apenas para resolver problemas administrativos dos hospitais.",
+                "Estudos subordinados às orientações dos médicos.",
+                "A pesquisa autônoma, feita com orientação e teorias sociológicas próprias para analisar criticamente o campo médico.",
+                "O ensino de sociologia nos cursos de enfermagem."
+            ],
+            answer: 2,
+            justification: "A sociologia DA medicina tem autonomia científica e capacidade crítica, feita de fora do escopo médico, enquanto a sociologia NA medicina responde às agendas e necessidades práticas da clínica."
+        },
+        {
+            q: "Na produção de conhecimento sociológico, a 'rutura com o individualismo' significa:",
+            options: [
+                "Acabar com as liberdades civis.",
+                "Enquadrar as ações individuais nos contextos sociais, estruturais e culturais que as condicionam.",
+                "Negar que o indivíduo exista.",
+                "Impedir consultas médicas individuais."
+            ],
+            answer: 1,
+            justification: "A sociologia recusa explicações de que as escolhas de saúde (estilo de vida) são puramente livres, demonstrando que elas são condicionadas por fatores macro como pobreza, classe e cultura."
+        },
+        {
+            q: "O que é o 'Etnocentrismo' no contexto das organizações de saúde?",
+            options: [
+                "Avaliar práticas de saúde de outros grupos tomando como padrão superior a própria cultura (ex: médicos menosprezando práticas de minorias ciganas ou imigrantes).",
+                "O estudo da biologia das etnias.",
+                "A valorização de medicinas tradicionais no SUS.",
+                "A descentralização administrativa dos hospitais."
+            ],
+            answer: 0,
+            justification: "O etnocentrismo é julgar outras culturas com base nos próprios padrões, muitas vezes gerando preconceito e dificuldades no atendimento de minorias."
+        },
+        {
+            q: "Em relação aos métodos de pesquisa, qual a principal função de um 'Inquérito' (Survey)?",
+            options: [
+                "Observação silenciosa do paciente no hospital.",
+                "Estudo profundo da biografia de um indivíduo único.",
+                "Recolher dados mensuráveis/quantitativos para verificar hipóteses sobre grandes amostras populacionais.",
+                "Realizar análise discursiva de filmes sobre medicina."
+            ],
+            answer: 2,
+            justification: "O inquérito por questionário é uma técnica quantitativa (extensiva) ideal para obter dados numéricos e tendências gerais da população."
+        },
+        {
+            q: "Qual a técnica de pesquisa qualitativa fundamental para compreender lógicas, racionalidades e significados das experiências de doença?",
+            options: ["Estatística demográfica", "Entrevista semi-diretiva", "Questionário de múltipla escolha", "Censo"],
+            answer: 1,
+            justification: "A entrevista permite que o sociólogo aprofunde as narrativas e entenda os motivos ocultos e representações subjetivas dos pacientes."
+        },
+        {
+            q: "Para Tavares, como as 'representações sociais' se articulam com as 'práticas'?",
+            options: [
+                "A prática sempre espelha exatamente a representação, sem falhas.",
+                "Representações conferem sentido e orientam a ação, embora frequentemente ocorram contradições (ex: dizer que come saudável, mas agir diferente).",
+                "As representações anulam a prática médica.",
+                "Não há qualquer conexão entre elas."
+            ],
+            answer: 1,
+            justification: "As pessoas organizam mentalmente suas visões de mundo (representações) que induzem práticas, mas no cotidiano há um desfasamento entre o 'discurso público' (o que dizem) e o 'privado' (o que fazem)."
+        },
+        {
+            q: "O conhecimento 'leigo' em saúde refere-se a:",
+            options: [
+                "Saberes dos profissionais de saúde menos graduados.",
+                "Noções e percepções desenvolvidas por pessoas sem formação acadêmica em saúde, formadas pela experiência cotidiana e cultura.",
+                "Ignorância absoluta, sem qualquer racionalidade.",
+                "Conhecimento de laboratórios farmacêuticos."
+            ],
+            answer: 1,
+            justification: "O conhecimento leigo é a forma como o cidadão comum interpreta sintomas e lida com a doença, possuindo sua própria lógica e racionalidade."
+        },
+        {
+            q: "Como a sociologia vê a atual relação entre o 'conhecimento leigo' e o 'conhecimento pericial' (médico)?",
+            options: [
+                "Eles estão completamente separados e isolados.",
+                "O saber leigo foi totalmente apagado.",
+                "As fronteiras estão turvas: há apropriação leiga de critérios médicos (pericialização) e relações mais negociadas e menos assimétricas nas consultas.",
+                "O médico perdeu toda a sua autoridade legal."
+            ],
+            answer: 2,
+            justification: "Hoje os pacientes pesquisam (ex: internet, bulas) e chegam ao consultório com mais informações, exigindo participação nas decisões, diluindo as antigas fronteiras rígidas."
+        },
+        {
+            q: "O que caracteriza a 'farmacologização da vida quotidiana' descrita no texto?",
+            options: [
+                "O uso de remédios apenas em UTIs.",
+                "O fim das indústrias farmacêuticas.",
+                "O uso de medicamentos extrapolando doenças e invadindo o bem-estar e o desempenho (ex: melhorar memória, humor, desempenho sexual).",
+                "A substituição de remédios por alimentos naturais."
+            ],
+            answer: 2,
+            justification: "É o primado dos medicamentos para gerir não só patologias, mas traços normais da vida e a performance humana (consumos de performance)."
+        },
+        {
+            q: "O conceito de 'Pluralismo Terapêutico' explorado por Noémia Lopes indica:",
+            options: [
+                "A presença de muitos médicos em um hospital.",
+                "O consumo conjugado ou alternado de recursos médicos ortodoxos, remédios naturais e alimentos terapêuticos por um mesmo indivíduo.",
+                "O tratamento gratuito oferecido pelo Estado.",
+                "A proibição de práticas como acupuntura."
+            ],
+            answer: 1,
+            justification: "Pacientes hoje combinam diferentes racionalidades: misturam o remédio alopático com o chá ou suplemento, mostrando uma cultura de saúde híbrida."
+        },
+        {
+            q: "Qual característica define as doenças crônicas como um foco sociológico crescente?",
+            options: [
+                "São curadas em 5 dias de internação.",
+                "Foco passa da 'cura' para a 'gestão e controle' ao longo do tempo, alterando rotinas e identidade (rutura biográfica).",
+                "Elas afetam apenas a dimensão biológica, sem impacto familiar.",
+                "Existem apenas em países não desenvolvidos."
+            ],
+            answer: 1,
+            justification: "Sendo incuráveis (ex: diabetes, Alzheimer, esclerose), o indivíduo precisa integrar a doença ao seu cotidiano, exigindo um trabalho permanente de gestão de sintomas e identidade."
+        },
+        {
+            q: "Qual a função da medicina na legitimação da doença, atuando como controle social?",
+            options: [
+                "Abolir a necessidade do trabalho.",
+                "Agir como instância oficial de consagração de quem está doente, dando atestados e avaliando aptidões e subsídios, regulando assim o corpo social.",
+                "Vender atestados falsos.",
+                "Aumentar impostos."
+            ],
+            answer: 1,
+            justification: "Apenas o médico tem a autoridade estatal/legal de chancelar quem está doente (certificar), controlando assim abstenções no trabalho, indenizações e o desvio social da doença."
+        },
+        {
+            q: "A sociologia de Durkheim ensina que as 'representações sociais' são:",
+            options: [
+                "Problemas psiquiátricos raros.",
+                "Fantasias criadas pela mídia.",
+                "Representações coletivas que não derivam de um único indivíduo, mas expressam os valores e imagens comuns construídos por um grupo social.",
+                "O mesmo que representações individuais em psicanálise."
+            ],
+            answer: 2,
+            justification: "Para Durkheim, as formas de pensar a saúde e o corpo não são invenções solitárias, são coletivas, originadas nas vivências, na classe e na cultura."
+        },
+        {
+            q: "Para a sociologia da saúde, afirmar que a saúde e a doença são 'construções sociais' significa que:",
+            options: [
+                "Não existem vírus na realidade.",
+                "Seus limites, definições, práticas e vivências variam com o tempo, contexto histórico, relações de poder e cultura.",
+                "Elas são construídas literalmente por engenheiros.",
+                "Toda doença é imaginária (hipocondria)."
+            ],
+            answer: 1,
+            justification: "A biologia importa, mas O QUE uma sociedade define como doença (ex: homossexualidade no passado, hiperatividade hoje) muda histórica e politicamente."
+        },
+        {
+            q: "Sobre a SIDA (AIDS), Cristiana Bastos observou que, nos anos 80, a doença tornou-se uma ferramenta de:",
+            options: [
+                "Aproximação de povos e paz mundial.",
+                "Celebração de diversidades sexuais.",
+                "Criação de categorias de 'culpados' e amplificação de temores atávicos, preconceitos e controle moral severo sobre grupos desviantes.",
+                "Cura instantânea da dependência química."
+            ],
+            answer: 2,
+            justification: "A epidemia de HIV gerou estigmatização massiva e pânico moral, associando a patologia a vícios, homossexualidade e punição divina, refletindo preconceitos da sociedade moderna."
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timerInterval;
+    let timeLeft = 60;
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    function startQuiz() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        loadQuestion();
+    }
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 60;
+        updateTimerText();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerText();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                handleTimeout();
+            }
+        }, 1000);
+    }
+
+    function updateTimerText() {
+        const seconds = timeLeft < 10 ? '0' + timeLeft : timeLeft;
+        document.getElementById('timer-text').innerText = `00:${seconds}`;
+    }
+
+    function handleTimeout() {
+        const optionsContainer = document.getElementById('options-container');
+        const buttons = optionsContainer.querySelectorAll('.option');
+        buttons.forEach(btn => btn.disabled = true);
+        showJustification(false);
+    }
+
+    function loadQuestion() {
+        const qData = questions[currentQuestionIndex];
+        document.getElementById('progress-text').innerText = `Questão ${currentQuestionIndex + 1} de ${questions.length}`;
+        document.getElementById('question-text').innerText = qData.q;
+        
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+        
+        qData.options.forEach((option, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option';
+            btn.innerText = option;
+            btn.onclick = () => checkAnswer(index, btn);
+            optionsContainer.appendChild(btn);
+        });
+
+        document.getElementById('justification-container').style.display = 'none';
+        document.getElementById('next-btn').classList.add('hidden');
+        startTimer();
+    }
+
+    function checkAnswer(selectedIndex, btnElement) {
+        clearInterval(timerInterval);
+        const qData = questions[currentQuestionIndex];
+        const optionsContainer = document.getElementById('options-container');
+        const buttons = optionsContainer.querySelectorAll('.option');
+
+        buttons.forEach((btn, idx) => {
+            btn.disabled = true;
+            if (idx === qData.answer) {
+                btn.classList.add('correct');
+            } else if (idx === selectedIndex) {
+                btn.classList.add('wrong');
+            }
+        });
+
+        if (selectedIndex === qData.answer) {
+            score++;
+        }
+
+        showJustification(true);
+    }
+
+    function showJustification(answered) {
+        const qData = questions[currentQuestionIndex];
+        const container = document.getElementById('justification-container');
+        const textElement = document.getElementById('justification-text');
+        
+        let prefix = answered ? "" : "<strong style='color:red;'>Tempo esgotado!</strong> ";
+        textElement.innerHTML = prefix + qData.justification;
+        container.style.display = 'block';
+        
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('score-text').innerText = score;
+    }
+</script>
+
+</body>
+</html>
