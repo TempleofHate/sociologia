@@ -1,436 +1,258 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz: Sociologia e SUS</title>
-    <style>
-        :root {
-            --bg-color: #f4f4f9;
-            --text-color: #333;
-            --container-bg: #fff;
-            --primary-color: #0056b3;
-            --primary-hover: #004494;
-            --option-bg: #e7e9eb;
-            --option-hover: #d4d6d9;
-            --border-color: #ddd;
-            --error-color: #d32f2f;
-            --success-color: #2e7d32;
-            --justification-bg: #e3f2fd;
-        }
-
-        body.dark-mode {
-            --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --container-bg: #1e1e1e;
-            --primary-color: #64b5f6;
-            --primary-hover: #42a5f5;
-            --option-bg: #2c2c2c;
-            --option-hover: #3c3c3c;
-            --border-color: #444;
-            --justification-bg: #263238;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            transition: all 0.3s;
-        }
-
-        .container {
-            background-color: var(--container-bg);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            max-width: 800px;
-            width: 100%;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        h1, h2, h3 { margin-top: 0; }
-
-        button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            background-color: var(--primary-color);
-            color: #fff;
-            transition: background-color 0.3s;
-            margin: 5px 0;
-        }
-
-        button:hover { background-color: var(--primary-hover); }
-
-        .theme-toggle {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-        }
-        .theme-toggle:hover { background-color: var(--option-bg); color: var(--text-color); }
-
-        .timer { font-size: 18px; font-weight: bold; color: var(--error-color); }
-
-        .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-
-        .option {
-            background-color: var(--option-bg);
-            color: var(--text-color);
-            padding: 15px;
-            border-radius: 5px;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            text-align: left;
-            transition: 0.2s;
-        }
-
-        .option:hover:not(:disabled) { background-color: var(--option-hover); }
-        .option.correct { background-color: var(--success-color); color: white; border-color: var(--success-color); }
-        .option.wrong { background-color: var(--error-color); color: white; border-color: var(--error-color); }
-        .option:disabled { cursor: not-allowed; }
-
-        .justification {
-            background-color: var(--justification-bg);
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: none;
-            font-size: 15px;
-            line-height: 1.5;
-        }
-
-        .hidden { display: none; }
-        .progress { font-size: 16px; font-weight: bold; color: var(--primary-color); }
-        .difficulty-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
-        .difficulty-buttons button { flex: 1; }
-
-    </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quiz SUS e Brasil Sorridente</title>
+<style>
+:root{--bg:#f4f4f9;--txt:#333;--card:#fff;--pri:#0056b3;--hover:#004494;--opt:#e7e9eb;--err:#d32f2f;--suc:#2e7d32;--just:#e3f2fd}
+body.dark{--bg:#121212;--txt:#e0e0e0;--card:#1e1e1e;--pri:#64b5f6;--opt:#2c2c2c;--just:#263238}
+body{font-family:sans-serif;background:var(--bg);color:var(--txt);margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh}
+.container{background:var(--card);padding:30px;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,0.2);max-width:800px;width:100%}
+.header{display:flex;justify-content:space-between;border-bottom:1px solid #ccc;padding-bottom:10px;margin-bottom:20px}
+button{padding:12px;border:none;border-radius:5px;cursor:pointer;font-size:16px;font-weight:bold;background:var(--pri);color:#fff;margin:5px 0}
+button:hover{opacity:0.9}
+.theme-btn{background:transparent;color:var(--txt);border:1px solid #ccc}
+.options{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.option{background:var(--opt);color:var(--txt);text-align:left;border:1px solid #ccc}
+.option.correct{background:var(--suc);color:#fff}
+.option.wrong{background:var(--err);color:#fff}
+.hidden{display:none}
+.diff-btns{display:flex;gap:10px}
+.diff-btns button{flex:1}
+.justification{background:var(--just);padding:15px;border-radius:5px;display:none;margin-bottom:15px}
+.timer{color:var(--err);font-weight:bold;font-size:18px}
+</style>
 </head>
 <body>
-
 <div class="container">
-    <div class="header">
-        <h1>Avaliação Integrada</h1>
-        <button class="theme-toggle" onclick="toggleTheme()">🌓 Alternar Tema</button>
-    </div>
-
-    <!-- Menu de Dificuldade -->
+    <div class="header"><h2>Quiz SUS & Saúde Bucal</h2><button class="theme-btn" onclick="document.body.classList.toggle('dark')">🌓 Tema</button></div>
+    
     <div id="start-screen">
-        <h2>Selecione a Dificuldade</h2>
-        <p>Este quiz contém questões retiradas dos materiais sobre Sociologia (Giddens e Tavares), Princípios e Legislação do SUS, e Diretrizes de Saúde Bucal.</p>
-        <p><strong>Escolha seu nível para iniciar (40 questões por nível):</strong></p>
-        <div class="difficulty-buttons">
-            <button style="background-color: #2e7d32;" onclick="startQuiz('facil')">Fácil</button>
-            <button style="background-color: #f57c00;" onclick="startQuiz('medio')">Médio</button>
-            <button style="background-color: #c62828;" onclick="startQuiz('dificil')">Difícil</button>
+        <p>120 Questões baseadas nos PDFs: Princípios do SUS, Introdução/Legislação e Brasil Sorridente.</p>
+        <div class="diff-btns">
+            <button style="background:#2e7d32" onclick="start('facil')">Fácil (40)</button>
+            <button style="background:#f57c00" onclick="start('medio')">Médio (40)</button>
+            <button style="background:#c62828" onclick="start('dificil')">Difícil (40)</button>
         </div>
     </div>
 
-    <!-- Tela do Quiz -->
     <div id="quiz-screen" class="hidden">
-        <div class="header" style="border:none;">
-            <span class="progress" id="progress-text">Questão 1 de 40</span>
-            <span class="timer" id="timer-text">01:00</span>
-        </div>
-        <h3 id="question-text"></h3>
-        <div class="options" id="options-container"></div>
-        
-        <div class="justification" id="justification-container">
-            <strong>Justificativa:</strong> <span id="justification-text"></span>
-        </div>
-
-        <button id="next-btn" class="hidden" style="width: 100%;" onclick="nextQuestion()">Próxima Questão</button>
+        <div class="header" style="border:none"><span id="prog" style="color:var(--pri);font-weight:bold"></span><span id="timer" class="timer">01:00</span></div>
+        <h3 id="question"></h3>
+        <div class="options" id="opts"></div>
+        <div class="justification" id="just"></div>
+        <button id="next" class="hidden" style="width:100%" onclick="next()">Próxima</button>
     </div>
 
-    <!-- Tela de Resultado -->
-    <div id="result-screen" class="hidden">
-        <h2>Fim do Quiz!</h2>
-        <p>Você completou o nível <strong id="level-finished"></strong>.</p>
-        <p>Sua pontuação final é: <strong id="score-text"></strong> de 40.</p>
-        <button onclick="location.reload()" style="width: 100%;">Voltar ao Menu Principal</button>
+    <div id="res-screen" class="hidden">
+        <h2>Fim!</h2><p>Acertos: <strong id="score"></strong> de 40.</p>
+        <button style="width:100%" onclick="location.reload()">Voltar</button>
     </div>
 </div>
 
 <script>
-    // Banco de Dados com as 120 Questões (40 fáceis, 40 médias, 40 difíceis)
-    const db = [
-        // ================= FÁCEIS (40) =================
-        {d:"facil", q:"O que significa o princípio da Universalidade no SUS?", o:["O acesso à saúde depende de contribuição previdenciária.","A saúde é direito apenas dos trabalhadores formais.","Todos os cidadãos brasileiros têm direito à atenção à saúde.","Apenas os cidadãos de baixa renda têm acesso."], a:2, j:"A universalidade garante que todos os cidadãos brasileiros têm direito à atenção à saúde, sem qualquer discriminação[cite: 3]."},
-        {d:"facil", q:"Qual princípio do SUS foca em tratar 'desigualmente os desiguais'?", o:["Universalidade.","Equidade.","Integralidade.","Descentralização."], a:1, j:"A equidade reconhece a pluralidade e a diversidade, significando tratar desigualmente os desiguais conforme suas necessidades[cite: 3]."},
-        {d:"facil", q:"O que a Integralidade critica?", o:["A falta de financiamento.","A participação popular.","O reducionismo biomédico.","A regionalização."], a:2, j:"A integralidade critica o reducionismo biomédico, incorporando o conceito ampliado de saúde e envolvendo o sujeito como um todo[cite: 3]."},
-        {d:"facil", q:"Qual diretriz do SUS corresponde à distribuição de poder da esfera federal para estadual e municipal?", o:["Hierarquização.","Descentralização.","Regionalização.","Participação Comunitária."], a:1, j:"A descentralização é a distribuição de poder político, administrativo e financeiro da União para estados, DF e municípios[cite: 3]."},
-        {d:"facil", q:"Quais são as duas instâncias colegiadas que garantem a participação da comunidade no SUS?", o:["Prefeituras e Câmaras Municipais.","Conselhos de Saúde e Conferências de Saúde.","Ministério da Saúde e Secretarias Estaduais.","Hospitais e Clínicas."], a:1, j:"A participação da comunidade ocorre pelas Conferências de Saúde e Conselhos de Saúde[cite: 4]."},
-        {d:"facil", q:"Qual foi o principal marco na origem do movimento da Reforma Sanitária Brasileira?", o:["A criação do INAMPS em 1970.","A fundação do SUS em 1980.","A 8ª Conferência Nacional de Saúde em 1986.","O fim do regime militar em 1985."], a:2, j:"A 8ª Conferência Nacional de Saúde, em 1986, aprovou o conceito da saúde como direito e delineou os fundamentos do SUS[cite: 3, 4]."},
-        {d:"facil", q:"O modelo biomédico da saúde originou-se intimamente ligado ao triunfo da:", o:["Medicina alternativa.","Religião.","Ciência e razão nas sociedades modernas.","Superstição e tradição camponesa."], a:2, j:"A emergência do modelo biomédico estava intimamente relacionada com o triunfo da ciência e da razão sobre explicações tradicionais nas sociedades modernas[cite: 1]."},
-        {d:"facil", q:"De acordo com Giddens, a anorexia é predominantemente influenciada por:", o:["Genes e hormônios unicamente.","Fatores sociais e culturais, como a pressão para ter um corpo magro.","Falta de higiene alimentar.","Pobreza extrema em países em desenvolvimento."], a:1, j:"A saúde e a doença, como no caso da anorexia, são profundamente afetadas por influências sociais e culturais, como a pressão para ter um corpo magro[cite: 1]."},
-        {d:"facil", q:"O que Ivan Illich chamou de 'iatrogênese'?", o:["Curar doenças com métodos naturais.","A expansão da medicina para salvar mais vidas.","Doenças autocausadas ou danos resultantes de tratamentos médicos.","A erradicação de pandemias."], a:2, j:"Ivan Illich sugeriu que a medicina causava iatrogênese, ou 'doenças autocausadas', onde o tratamento piora o paciente ou a dependência médica reduz a capacidade de lidar com a vida[cite: 1]."},
-        {d:"facil", q:"No modelo biomédico, o foco principal do tratamento recai sobre:", o:["O bem-estar espiritual do indivíduo.","As emoções do paciente.","Curar a doença física/biológica isolada.","O contexto social do doente."], a:2, j:"A ênfase do modelo biomédico é em curar a doença manipulando o corpo doente de forma isolada, em vez do bem-estar geral do indivíduo[cite: 1]."},
-        {d:"facil", q:"Qual a diferença básica entre 'disease' e 'illness' na sociologia da saúde?", o:["Disease é doença mental; illness é doença física.","Disease reporta-se à patologia biológica; illness refere-se à experiência subjetiva e sintomas vividos pelo paciente.","Disease é incurável; illness é curável.","Não há diferença, são sinônimos absolutos."], a:1, j:"'Disease' reporta-se à doença no sentido biológico, enquanto 'illness' refere-se às respostas aos sintomas vivenciados pelo doente[cite: 2]."},
-        {d:"facil", q:"A saúde, vista como um 'fenômeno social total', significa que ela:", o:["É controlada totalmente pelo governo.","Afeta apenas as classes pobres.","Abrange a totalidade da realidade social, tendo implicações múltiplas em várias dimensões ao mesmo tempo.","Não tem relação com a biologia."], a:2, j:"A saúde é um 'fenômeno social total' por abranger a totalidade da realidade social e ter múltiplas implicações em vários níveis e dimensões[cite: 2]."},
-        {d:"facil", q:"O que a sociologia entende por 'medicalização da sociedade'?", o:["A oferta universal de medicamentos gratuitos.","A definição e o tratamento de problemas não médicos (como calvície ou envelhecimento) como se fossem doenças.","O incentivo às práticas de medicina natural.","A redução da influência dos hospitais na sociedade."], a:1, j:"Medicalização é o processo pelo qual problemas não médicos passaram a ser definidos e tratados como problemas médicos[cite: 2]."},
-        {d:"facil", q:"Sobre o conceito de Estigma (Goffman), ele se refere a:", o:["Uma premiação de saúde pública.","Um erro no diagnóstico clínico.","Características ou atributos considerados sociais negativos que geram desvalorização do indivíduo.","Um estado de total isolamento imunológico."], a:2, j:"Estigma refere-se a características definidas socialmente como negativas, gerando formas de desvalorização social de determinados indivíduos[cite: 2]."},
-        {d:"facil", q:"Segundo as Diretrizes de Saúde Bucal, o 'acolhimento' pressupõe:", o:["Atender apenas pacientes agendados.","Receber, escutar, orientar, atender, encaminhar e acompanhar o usuário em sua integralidade.","Focar unicamente no tratamento da cárie.","Tratar todos os pacientes da mesma forma padronizada."], a:1, j:"O acolhimento pressupõe que o serviço seja organizado de forma usuário-centrada nos atos de receber, escutar, orientar e acompanhar[cite: 5]."},
-        {d:"facil", q:"Nas Diretrizes de Saúde Bucal, a ação educativa supervisionada que visa o autocuidado na escovação é chamada de:", o:["Aplicação Tópica de Flúor.","Fluoretação das Águas.","Higiene Bucal Supervisionada (HBS).","Ortodontia Preventiva."], a:2, j:"A Higiene Bucal Supervisionada (HBS) é desenvolvida pelos serviços de saúde buscando a prevenção da cárie e autonomia do paciente[cite: 5]."},
-        {d:"facil", q:"A participação da iniciativa privada no SUS, segundo a Lei 8.080/90, ocorre em caráter:", o:["Exclusivo.","Substitutivo.","Complementar.","Obrigatório e majoritário."], a:2, j:"A iniciativa privada poderá participar do SUS em caráter complementar, conforme o § 2º do Art. 4 da Lei 8080/90[cite: 4]."},
-        {d:"facil", q:"Como a saúde antes do SUS era organizada (modelo anterior a 1988)?", o:["Universal e gratuito para todos.","Modelo assistencial privatista/liberal privatista com acesso restrito.","Completamente gerida por ONGs comunitárias.","Totalmente descentralizada nos municípios."], a:1, j:"Antes do SUS, havia o modelo assistencial privatista com acesso restrito, fragmentado e centrado no atendimento curativo hospitalocêntrico[cite: 4]."},
-        {d:"facil", q:"Onde os Conselhos de Saúde atuam no SUS?", o:["Exclusivamente no âmbito federal.","No financiamento de hospitais privados.","Em cada esfera de governo, de forma permanente e deliberativa.","Somente a cada 4 anos nas conferências."], a:2, j:"Os Conselhos de Saúde atuam de modo permanente e deliberativo na formulação e controle das políticas em cada esfera de governo[cite: 4]."},
-        {d:"facil", q:"A estratégia da Saúde da Família foca principalmente em:", o:["Tratamentos complexos em hospitais terciários.","Cuidado baseado no território, com equipe multiprofissional e visitas domiciliares.","Isolamento dos pacientes com doenças crônicas.","Distribuição aleatória de médicos pelo país."], a:1, j:"A estratégia de Saúde da Família foca no território, no trabalho em equipe multiprofissional e nas visitas domiciliares para ampliar o acesso e criar vínculos[cite: 5]."},
-        // Completando até 40 (Facil)
-        {d:"facil", q:"O que a Constituição de 1988 determinou no Artigo 196?", o:["A saúde é dever das empresas privadas.","A saúde é direito de todos e dever do Estado.","A saúde é responsabilidade exclusiva do cidadão.","O SUS deve ser inteiramente privatizado."], a:1, j:"A saúde é direito de todos e dever do Estado, garantido mediante políticas sociais e econômicas[cite: 4]."},
-        {d:"facil", q:"A quem compete a direção do SUS na esfera federal?", o:["Ministério da Saúde.","Secretarias Estaduais de Saúde.","Secretarias Municipais de Saúde.","Conselho Federal de Medicina."], a:0, j:"Na esfera federal, a direção do SUS cabe à União, por meio do Ministério da Saúde[cite: 3]."},
-        {d:"facil", q:"Qual o principal objetivo das Conferências de Saúde?", o:["Gerir a folha de pagamento dos médicos.","Avaliar a situação de saúde e propor diretrizes para a formulação da política de saúde.","Realizar auditorias clínicas.","Comprar insumos hospitalares."], a:1, j:"As Conferências de Saúde reúnem-se a cada 4 anos para avaliar a situação de saúde e propor diretrizes para a formulação da Política de Saúde[cite: 4]."},
-        {d:"facil", q:"Sobre o conhecimento leigo na saúde, a sociologia defende que:", o:["É pura ignorância que deve ser eliminada.","É a percepção subjetiva, baseada na cultura e na experiência cotidiana dos indivíduos.","Baseia-se estritamente em protocolos laboratoriais.","Deve substituir totalmente o conhecimento médico."], a:1, j:"O conhecimento leigo refere-se às ideias de pessoas sem formação técnica, que mobilizam saberes e percepções para interpretar suas experiências[cite: 2]."},
-        {d:"facil", q:"Na perspectiva sociológica (Giddens), a doença tem dimensões:", o:["Exclusivamente individuais.","Exclusivamente fisiológicas.","Pessoais e públicas, afetando os padrões da vida cotidiana.","Místicas e irreais."], a:2, j:"A doença tem dimensões pessoais e públicas, alterando os padrões de vida cotidiana do doente e das pessoas ao redor[cite: 1]."},
-        {d:"facil", q:"A reorientação do modelo de Atenção Básica em Saúde Bucal exige:", o:["Atuar de forma isolada do resto do posto de saúde.","A garantia de integralidade, acolhimento, e a integração com a equipe de Saúde da Família.","Focar apenas na extração dentária.","Abolir as ações de promoção da saúde."], a:1, j:"A equipe de saúde bucal deve ser multiprofissional, garantindo integralidade e trabalhando junto à equipe de Saúde da Família[cite: 5]."},
-        {d:"facil", q:"As ações coletivas em saúde bucal (como educação e HBS) devem ser realizadas preferencialmente por:", o:["Exclusivamente médicos.","Pessoal auxiliar (THD, ACD e ACS) com supervisão do Cirurgião-Dentista.","Apenas professores nas escolas.","Apenas o Cirurgião-Dentista, isoladamente."], a:1, j:"Atividades educativas e preventivas coletivas devem ser executadas preferencialmente pelo pessoal auxiliar, cabendo ao CD o planejamento e supervisão[cite: 5]."},
-        {d:"facil", q:"A quem compete a Vigilância Sanitária no Brasil?", o:["Exército Brasileiro.","Ao Sistema Único de Saúde (SUS).","Às Organizações Não Governamentais.","Aos planos de saúde privados."], a:1, j:"Está incluída no campo de atuação do SUS a execução das ações de vigilância sanitária[cite: 4]."},
-        {d:"facil", q:"Qual a composição de um Conselho de Saúde (paridade)?", o:["100% usuários.","50% prestadores e 50% profissionais.","50% usuários, 25% profissionais e 25% gestores/prestadores.","100% gestores governamentais."], a:2, j:"A representação dos usuários nos Conselhos e Conferências será paritária (50% povo, 25% profissionais, 25% gestores/prestadores)[cite: 4]."},
-        {d:"facil", q:"O que a sociologia (Tavares) entende por etnocentrismo médico?", o:["Apoiar os imigrantes.","Avaliar os comportamentos dos pacientes usando apenas os valores da cultura do profissional/instituição de saúde.","O estudo de doenças tropicais.","A busca pelo tratamento mais moderno."], a:1, j:"O etnocentrismo é encarar sociedades ou grupos diferentes tomando como padrão a lógica da própria sociedade/instituição médica, gerando distâncias[cite: 2]."},
-        {d:"facil", q:"O que significa 'Regionalização' no SUS?", o:["Dividir o país em zonas climáticas.","Organizar a rede a partir da noção de território para identificar necessidades de saúde e gerir o acesso.","Proibir a migração de pacientes entre cidades.","Criar hospitais apenas nas capitais."], a:1, j:"A regionalização foca na noção de território, onde os indicadores epidemiológicos e condições de vida norteiam os serviços de uma região[cite: 3]."},
-        {d:"facil", q:"A Saúde Bucal na atenção básica deve priorizar de forma absoluta os casos de:", o:["Estética facial.","Ortodontia avançada.","Dor, infecção e sofrimento.","Clareamento dental em massa."], a:2, j:"Prioridade absoluta deve ser dada aos casos de dor, infecção e sofrimento no acesso para a assistência na atenção básica[cite: 5]."},
-        {d:"facil", q:"No modelo biomédico, o médico é considerado:", o:["O único especialista na doença, adotando uma abordagem isenta de valores.","Um parceiro igualitário do paciente.","Um mero executor das crenças do paciente.","Um curandeiro místico."], a:0, j:"O modelo biomédico assume que os especialistas médicos são os únicos especialistas no tratamento, operando de forma supostamente isenta de valores[cite: 1]."},
-        {d:"facil", q:"Por que a AIDS evidenciou a desigualdade global em saúde, segundo Giddens?", o:["A doença atingiu apenas os países ricos.","Os países pobres têm mais curas naturais.","Pessoas infectadas nos países ricos têm mais chance de sobrevivência por causa do acesso às caras drogas antirretrovirais.","A AIDS não evidenciou desigualdades."], a:2, j:"As pessoas infectadas com HIV nos países ricos têm uma chance muito maior de sobreviver do que nos países pobres devido ao acesso desigual a medicamentos[cite: 1]."},
-        {d:"facil", q:"Segundo a Lei 8.080, para onde vão os recursos do SUS na esfera federal?", o:["Fundo de Amparo ao Trabalhador.","Fundo Nacional de Saúde.","Conta pessoal do Ministro.","Caixa Econômica."], a:1, j:"Os recursos financeiros do SUS federal são depositados em conta especial chamada Fundo Nacional de Saúde[cite: 4]."},
-        {d:"facil", q:"A sociologia da saúde (Tavares) adota a pesquisa qualitativa, principalmente, para:", o:["Fazer censos populacionais exatos.","Aprofundar a compreensão das razões e significados nas representações dos indivíduos.","Verificar hipóteses matemáticas inquestionáveis.","Descobrir curas biológicas."], a:1, j:"A pesquisa qualitativa, como a entrevista, explora e aprofunda a informação para compreender e interpretar significados subjacentes[cite: 2]."},
-        {d:"facil", q:"Segundo a Política de Saúde Bucal, o que deve embasar o planejamento das ações?", o:["Achismos da equipe.","O desejo de lucro.","A epidemiologia e as informações sobre o território.","O material publicitário da indústria."], a:2, j:"O planejamento das ações deve ser precedido por diagnósticos baseados na epidemiologia e nas informações sobre o território e a comunidade[cite: 5]."},
-        {d:"facil", q:"Quais esferas compõem a gestão do SUS?", o:["Federal, Empresarial e Internacional.","Federal, Estadual, Distrital e Municipal.","Apenas Municipal e Federal.","Presidência, Senado e Câmara."], a:1, j:"A gestão do SUS é composta pela direção na União (Ministério da Saúde), Estados (Secretarias Estaduais) e Municípios (Secretarias Municipais)[cite: 3]."},
-        {d:"facil", q:"O Estatuto do SUS (Constituição) autoriza ou proíbe a cobrança direta do cidadão pelos serviços do SUS?", o:["Autoriza para cirurgias.","Autoriza dependendo da renda.","Proíbe, o SUS é gratuito no momento do uso (financiado por impostos).","Autoriza para exames."], a:2, j:"A saúde é um direito social, e o acesso é universal e não um serviço acessado por pagamento direto (é financiado pelos orçamentos da seguridade social)[cite: 3, 4]."},
-        {d:"facil", q:"Na estratégia de Saúde da Família, qual o papel das Visitas Domiciliares em Saúde Bucal?", o:["Apenas verificar se a pessoa tem escova de dente.","Identificar riscos de pessoas acamadas e propiciar acompanhamento/tratamento.","Forçar tratamentos sem consentimento.","Vender planos odontológicos."], a:1, j:"Visitas de saúde bucal a pessoas com dificuldades de locomoção visam a identificação dos riscos, acompanhamento e tratamento[cite: 5]."},
+const db = [
+/* FÁCEIS (40) */
+{d:"facil", q:"O princípio do SUS que garante acesso a todos os cidadãos é:", o:["Equidade","Integralidade","Universalidade","Seletividade"], a:2, j:"A universalidade garante que todos têm direito à saúde."},
+{d:"facil", q:"Tratar 'desigualmente os desiguais' refere-se ao princípio da:", o:["Universalidade","Equidade","Descentralização","Participação"], a:1, j:"Equidade é focar nas necessidades plurais para reduzir desigualdades."},
+{d:"facil", q:"A crítica ao reducionismo biomédico e foco no indivíduo como um todo é a:", o:["Equidade","Integralidade","Regionalização","Hierarquização"], a:1, j:"Integralidade envolve atenção curativa, preventiva e promocional global."},
+{d:"facil", q:"Distribuir poder da União para Estados e Municípios chama-se:", o:["Regionalização","Descentralização","Universalização","Hierarquização"], a:1, j:"Descentralização é o repasse de responsabilidades e recursos."},
+{d:"facil", q:"Segundo a CF/88, a saúde é um direito de todos e dever:", o:["Do Cidadão","Da Família","Do Estado","Do Mercado"], a:2, j:"Art. 196: A saúde é direito de todos e dever do Estado."},
+{d:"facil", q:"O evento marco em 1986 que delineou as bases do SUS foi:", o:["Lei 8080","Revolta da Vacina","8ª Conferência Nacional de Saúde","Criação do INAMPS"], a:2, j:"A 8ª CNS aprovou o conceito de saúde como direito."},
+{d:"facil", q:"A gestão do SUS no município cabe:", o:["Ao Ministério da Saúde","À Secretaria Estadual","À Secretaria Municipal de Saúde","Aos Hospitais"], a:2, j:"Direção única municipal cabe à Secretaria de Saúde do município."},
+{d:"facil", q:"A lei que regula os Conselhos e Conferências de Saúde é:", o:["Lei 8.080/90","Lei 8.142/90","Constituição Federal","Lei do Brasil Sorridente"], a:1, j:"A Lei 8142/90 trata da participação da comunidade e repasses financeiros."},
+{d:"facil", q:"No SUS, a representação dos usuários nos Conselhos deve ser:", o:["25%","50% (Paritária)","75%","100%"], a:1, j:"A paridade garante 50% das vagas aos usuários."},
+{d:"facil", q:"A iniciativa privada participa do SUS em caráter:", o:["Exclusivo","Complementar","Obrigatório","Majoritário"], a:1, j:"A CF/88 permite a participação complementar, preferencialmente filantrópica."},
+{d:"facil", q:"Qual fundo federal centraliza os repasses do SUS?", o:["Fundo Nacional de Saúde","Fundo de Garantia","Caixa Econômica","Fundo Social"], a:0, j:"Recursos do SUS vão para o Fundo Nacional de Saúde."},
+{d:"facil", q:"Antes do SUS, o modelo era focado em:", o:["Atenção preventiva","Medicina privatista e curativa","Saúde universal","Intersetorialidade"], a:1, j:"Era um modelo assistencial privatista e hospitalocêntrico."},
+{d:"facil", q:"Uma Conferência de Saúde ocorre a cada:", o:["1 ano","2 anos","4 anos","10 anos"], a:2, j:"A Lei 8142 define a periodicidade de 4 anos."},
+{d:"facil", q:"Nas Diretrizes de Saúde Bucal, o termo 'Acolhimento' significa:", o:["Apenas marcar consultas","Receber, escutar e resolver problemas","Internar o paciente","Distribuir escovas"], a:1, j:"Acolhimento é uma postura ética de escuta e responsabilização."},
+{d:"facil", q:"HBS em saúde bucal significa:", o:["Higiene Bucal Supervisionada","Hospital Base do Sistema","Hemorragia Bucal Severa","Hierarquia Básica de Saúde"], a:0, j:"HBS é ação preventiva de Higiene Bucal Supervisionada."},
+{d:"facil", q:"A prioridade de atendimento imediato em odontologia na atenção básica é:", o:["Estética","Limpeza","Dor, infecção e sofrimento","Clareamento"], a:2, j:"Casos de urgência (dor/infecção) têm prioridade absoluta."},
+{d:"facil", q:"A principal forma preventiva de acesso ao flúor (Brasil Sorridente) é:", o:["Dentifrício","Fluoretação das águas","Flúor em gel","Bochecho"], a:1, j:"Fluoretação da água é a medida mais abrangente e justa."},
+{d:"facil", q:"Quem presidia o CEBES e a ABRASCO nos anos 70/80?", o:["Empresários","Militares","Movimento da Reforma Sanitária","Planos de Saúde"], a:2, j:"O MRSB articulou-se por meio dessas entidades."},
+{d:"facil", q:"O SUS cobra taxas no atendimento?", o:["Sim, de ricos","Não, é gratuito no acesso","Sim, para exames","Apenas cirurgias"], a:1, j:"O financiamento é indireto (impostos), sendo gratuito na ponta."},
+{d:"facil", q:"Organizar o sistema em níveis de complexidade (postos -> hospitais) é:", o:["Regionalização","Descentralização","Hierarquização","Equidade"], a:2, j:"Hierarquização organiza o fluxo assistencial por complexidade."},
+{d:"facil", q:"Qual a direção do SUS na esfera Federal?", o:["Governo Estadual","Ministério da Saúde","Senado","Prefeitura"], a:1, j:"O MS é o gestor federal."},
+{d:"facil", q:"Vigilância Sanitária faz parte do SUS?", o:["Não","Sim","Apenas na teoria","Apenas para alimentos"], a:1, j:"A CF art 200 inclui a execução da Vigilância Sanitária."},
+{d:"facil", q:"A saúde bucal no SUS deve integrar-se à:", o:["Iniciativa privada","Equipe de Saúde da Família","Clínica estética","Vigilância armada"], a:1, j:"As diretrizes mandam inserir a saúde bucal na ESF."},
+{d:"facil", q:"Visitas domiciliares em odontologia servem para:", o:["Vender produtos","Acompanhar acamados e grupos de risco","Fazer cirurgias","Nada"], a:1, j:"Visam reconhecer riscos e tratar pessoas com dificuldade de locomoção."},
+{d:"facil", q:"Os profissionais auxiliares (ASB/TSB) podem fazer ações de educação?", o:["Nunca","Sempre, sob supervisão do CD","Somente médicos podem","Apenas fora do SUS"], a:1, j:"Ações coletivas são preferencialmente feitas por eles sob supervisão."},
+{d:"facil", q:"A saúde do trabalhador está incluída no SUS?", o:["Sim (Art. 200)","Não, é do INSS","Apenas para concursados","Nunca esteve"], a:0, j:"CF Art 200 inclui as ações de saúde do trabalhador."},
+{d:"facil", q:"A participação popular ocorre de forma:", o:["Consultiva apenas","Permanente e deliberativa (Conselhos)","Provisória","Sazonal"], a:1, j:"Os Conselhos são permanentes e deliberativos."},
+{d:"facil", q:"Doação de sangue no SUS permite comercialização?", o:["Sim","Não, é vedada todo tipo de comercialização","Apenas plasma","Sim, no exterior"], a:1, j:"Art 199 § 4º veda comercialização de sangue e tecidos."},
+{d:"facil", q:"Para onde vai o dinheiro fundo-a-fundo do SUS?", o:["Conta do Prefeito","Fundos de Saúde (FNS, FES, FMS)","Caixa Econômica Geral","INSS"], a:1, j:"Recursos ficam em contas especiais chamadas Fundos de Saúde."},
+{d:"facil", q:"O financiamento do SUS é:", o:["Exclusivo da União","Tripartite (União, Estados, Municípios)","Doações privadas","Loteria apenas"], a:1, j:"A seguridade social é financiada por todas as esferas."},
+{d:"facil", q:"O que é CEBES?", o:["Centro Brasileiro de Estudos de Saúde","Comissão Estatal Básica","Conselho Empresarial","Clínica Exclusiva"], a:0, j:"CEBES ajudou a fundar a Reforma Sanitária."},
+{d:"facil", q:"Como a saúde era vista ANTES do SUS?", o:["Fenômeno social","Direito","Ausência de doenças","Determinante social"], a:2, j:"Apenas como ausência de doenças, viés biológico."},
+{d:"facil", q:"O modelo de Atenção Integral foca em:", o:["Apenas curar","Vigilância e necessidades populacionais","Hospitais caros","Ignorar a prevenção"], a:1, j:"Atuação unificada em prevenção, promoção e cura."},
+{d:"facil", q:"As diretrizes de 2004 buscam um Brasil:", o:["Sorridente","Curado","Triste","Edêntulo"], a:0, j:"Política Nacional de Saúde Bucal - Brasil Sorridente."},
+{d:"facil", q:"Quem aprova o Plano de Saúde municipal?", o:["O Prefeito","O Conselho Municipal de Saúde","O Juiz","A Polícia"], a:1, j:"O Conselho de Saúde (controle social) deve aprovar."},
+{d:"facil", q:"Capital estrangeiro no SUS é:", o:["Liberado sempre","Proibido com fins lucrativos (salvo lei)","Obrigatório","A base do SUS"], a:1, j:"Vedado capital estrangeiro, salvo exceções legais posteriores."},
+{d:"facil", q:"As Conferências de Saúde reúnem:", o:["Só médicos","Governo, profissionais, prestadores e usuários","Só o governo","Só empresários"], a:1, j:"São compostas por todos os segmentos da sociedade."},
+{d:"facil", q:"O SUS pode fiscalizar bebidas e águas?", o:["Não","Sim, competência constitucional","Somente a água","Somente o álcool"], a:1, j:"Art 200 II: Fiscaliza alimentos, águas e bebidas."},
+{d:"facil", q:"O atendimento no SUS é:", o:["Fragmentado","Integral","Seletivo","Opcional"], a:1, j:"A integralidade busca evitar a fragmentação do cuidado."},
+{d:"facil", q:"Saúde como dever do Estado exclui dever da família?", o:["Sim","Não, o dever do Estado não exclui o das pessoas/família","A lei não diz","Exclui totalmente"], a:1, j:"O dever estatal não exclui o da família e empresas (Lei 8080)."},
 
-        // ================= MÉDIAS (40) =================
-        {d:"medio", q:"A 'Lei 8.080 de 1990' regulamenta o SUS dispondo sobre o quê?", o:["Somente os repasses financeiros entre estados.","A participação de capital estrangeiro em clínicas particulares.","As condições para a promoção, proteção e recuperação da saúde, além da organização dos serviços.","A privatização completa dos leitos hospitalares."], a:2, j:"A Lei 8.080/90 dispõe sobre as condições para a promoção, proteção e recuperação da saúde e o funcionamento dos serviços[cite: 4]."},
-        {d:"medio", q:"Para receber recursos do Fundo Nacional de Saúde, municípios e estados devem ter obrigatoriamente (Lei 8142):", o:["Conselho de Saúde e Fundo de Saúde, entre outros requisitos.","Apenas uma conta bancária simples.","Aprovação do FMI.","Sistemas operados por empresas privadas."], a:0, j:"Para receberem recursos, Estados e Municípios devem contar com Fundo de Saúde, Conselho de Saúde, Plano de Saúde, entre outros (Lei 8142)[cite: 4]."},
-        {d:"medio", q:"O que Parsons entende por 'Papel de doente condicional'?", o:["Aplica-se a pessoas com deficiência incurável.","Aplica-se a condições temporárias em que a pessoa ganha privilégios mas deve 'ficar bem' colaborando com o médico.","Aplica-se a condições auto-infligidas como obesidade severa.","É negado a qualquer paciente agudo."], a:1, j:"O papel de doente condicional aplica-se a condições temporárias da qual a pessoa pode se recuperar com os cuidados certos[cite: 1]."},
-        {d:"medio", q:"Na Sociologia, como as 'práticas' diferem das 'representações sociais' sobre a saúde?", o:["Práticas estão na esfera do pensamento; representações na da ação.","Ambas são puramente instintivas.","Representações estão no pensamento e formam a imagem do real; práticas estão na esfera da ação baseada nessas imagens.","Não existe diferença."], a:2, j:"Representações situam-se na esfera do pensamento (imagens do real) e as práticas na esfera da ação (atividades baseadas ou não nelas)[cite: 2]."},
-        {d:"medio", q:"Quais os três tipos de 'trabalho' que Corbin e Strauss identificaram na rotina de doentes crônicos?", o:["Trabalho físico, mental e emocional.","Trabalho da doença, trabalho diário e trabalho biográfico.","Trabalho hospitalar, clínico e genético.","Trabalho passivo, reativo e resistente."], a:1, j:"Eles identificaram o trabalho da doença (tratar a dor), trabalho diário (manter a casa/relações) e trabalho biográfico (reconstruir a narrativa pessoal)[cite: 1]."},
-        {d:"medio", q:"A participação do setor privado no SUS ocorre preferencialmente por intermédio de entidades:", o:["Com fins lucrativos e internacionais.","Filantrópicas e sem fins lucrativos.","ONGs desvinculadas da saúde.","Clínicas unicamente focadas em estética."], a:1, j:"A iniciativa privada pode participar do SUS de forma complementar, tendo preferência as entidades filantrópicas e sem fins lucrativos (Art. 199)[cite: 4]."},
-        {d:"medio", q:"O modelo social da deficiência argumenta que os problemas de pessoas com deficiência originam-se:", o:["Pela limitação biológica intrínseca e irreversível.","Pelas barreiras criadas pela organização social que as exclui.","Pelo sistema genético falho do indivíduo.","Por karma social."], a:1, j:"A UPIAS e Oliver definiram que a deficiência é a restrição de atividade causada por uma organização social que não acomoda limitações físicas[cite: 1]."},
-        {d:"medio", q:"O que a 'farmacologização da vida cotidiana' (Lopes) representa?", o:["O fim da indústria farmacêutica na modernidade.","A limitação do uso de remédios ao ambiente hospitalar.","A transformação de condições humanas e desempenho em questões tratáveis por fármacos.","A troca de todos os remédios por plantas naturais."], a:2, j:"A farmacologização transforma condições humanas (como desempenho sexual ou sono) em questões farmacológicas geridas no dia a dia[cite: 2]."},
-        {d:"medio", q:"Na diretriz de Saúde Bucal, o que significa a inclusão por 'linhas do cuidado'?", o:["Isolar as pessoas por bairro.","Organizar ações reconhecendo especificidades da idade (ex: criança, adolescente, idoso) e garantindo fluxos resolutivos.","Reduzir atendimentos para focar apenas nos adultos.","Prestar o mesmo atendimento exato sem distinção."], a:1, j:"Linhas de cuidado reconhecem as especificidades de cada ciclo de vida e condição, criando fluxos (acolher, atender, encaminhar) com resolutividade[cite: 5]."},
-        {d:"medio", q:"Por que a 'iatrogênese social', segundo Ivan Illich, prejudica a sociedade?", o:["Porque retira a autoridade dos hospitais privados.","Porque faz com que as pessoas parem de buscar ajuda médica por medo.","Porque a medicina se expande para cada vez mais áreas, diminuindo a autonomia das pessoas em lidar com os desafios da vida.","Porque incentiva as epidemias globais."], a:2, j:"Iatrogênese social ocorre quando a medicina expande-se criando demandas artificiais, reduzindo a capacidade natural de lidar com os desafios vitais[cite: 1]."},
-        {d:"medio", q:"O que a sociologia critica ao afirmar que o modelo médico age como 'instância de consagração'?", o:["A proibição de cirurgias plásticas eletivas.","O fato do diagnóstico ser absoluto e imutável.","O poder do médico de rotular o que é normal/anormal, ditando comportamentos e concedendo afastamentos legais.","A ineficácia das curas químicas."], a:2, j:"As instituições médicas consagram o normal/patológico, exercendo controle social ao determinar quem está legitimamente doente (e isento do trabalho)[cite: 2]."},
-        {d:"medio", q:"Qual a importância das plenárias da 8ª Conferência Nacional de Saúde para a política nacional?", o:["Garantiram que os médicos não pudessem atuar em clínicas.","Resultaram na privatização em massa do sistema.","Delinearam os fundamentos do SUS (acesso universal, descentralização e integração), impulsionando a Constituição de 1988.","Foram ignoradas pela Constituinte de 1988."], a:2, j:"A 8ª CNS delineou os fundamentos do SUS, com estratégias integradas que estabeleceram os alicerces adotados pela Constituinte[cite: 3]."},
-        {d:"medio", q:"O CEBES e a ABRASCO foram instituições chave em qual grande movimento histórico?", o:["O golpe militar.","A Revolta da Vacina.","O Movimento pela Reforma Sanitária Brasileira (MRSB).","O movimento de privatização dos hospitais."], a:2, j:"O CEBES (1976) e a ABRASCO (1979) deram fundamental contribuição à agenda da Reforma Sanitária Brasileira e à democratização da saúde[cite: 4]."},
-        {d:"medio", q:"Sobre os CREO (Centros de Referência de Especialidades Odontológicas), seu objetivo principal é:", o:["Substituir o posto de saúde básico.","Garantir ações curativas unicamente estéticas.","Prestar procedimentos mais complexos (atenção secundária) referenciados pela equipe de atenção básica.","Centralizar o financiamento municipal."], a:2, j:"Os CREOs são unidades de referência que ofertam procedimentos secundários/complementares de maior complexidade, como endodontias[cite: 5]."},
-        {d:"medio", q:"Na visão de Giddens, as desigualdades de saúde baseadas no gênero indicam que:", o:["As mulheres vivem menos em todos os países.","As mulheres têm mais suporte social e financeiro para lidar com crises.","Embora vivam mais, mulheres tendem a relatar mais problemas de saúde e são afetadas pelos papéis estressantes de múltiplos trabalhos.","Os homens sempre cuidam melhor da saúde."], a:2, j:"Mulheres relatam duas vezes mais ansiedade e doenças (efeito cumulativo de trabalhos duplos), mas a sua expectativa de vida, paradoxalmente, é maior[cite: 1]."},
-        {d:"medio", q:"O que Michel Foucault chamou de 'Biopoder' ou 'Tecnologias do Corpo' nas sociedades modernas?", o:["Máquinas que operam automaticamente as cirurgias.","A regulação da vida, da saúde, e da sexualidade das populações pelos Estados visando maximizar o controle e a produtividade da nação.","A tecnologia genética empregada na clonagem.","Medicamentos naturais em pílulas."], a:1, j:"Foucault argumentou que o Estado moderno usa o controle da saúde, sexualidade e comportamento para gerenciar o 'corpo social' da população[cite: 1, 2]."},
-        {d:"medio", q:"Como a hierarquização atua na organização do SUS?", o:["Força todos os pacientes a ir direto para os hospitais.","Estabelece os fluxos para encaminhar os pacientes por níveis de complexidade crescente, garantindo atendimento na rede adequada.","Indica quem manda no posto de saúde.","Privilegia as capitais no repasse financeiro."], a:1, j:"A hierarquização orienta os fluxos necessários de organização da rede, baseada na complexidade demandada pelas necessidades de saúde[cite: 3]."},
-        {d:"medio", q:"No SUS, qual a diferença entre Vigilância Sanitária (VS) e Vigilância Epidemiológica (VE)?", o:["VS controla surtos de bactérias; VE fiscaliza restaurantes.","VS elimina/diminui riscos no meio ambiente e produtos; VE foca no conhecimento e detecção de fatores determinantes da doença nas populações.","A VE não faz parte do SUS.","A VS atua só nos hospitais."], a:1, j:"A VS intervém no meio ambiente/produtos. A VE detecta mudanças nos determinantes epidemiológicos da saúde na população[cite: 4]."},
-        {d:"medio", q:"O que a sociologia quer dizer com 'Pluralismo Terapêutico Restrito' (Noémia Lopes)?", o:["Usar vários médicos para curar um resfriado.","Consumir chás e ervas sem usar remédios químicos.","O consumo conjugado ou alternado de recursos médicos, mas de forma lógica e articulada à crença do paciente em diferentes fontes de cura.","Proibir as farmácias comuns."], a:2, j:"O pluralismo reflete práticas e lógicas onde o indivíduo cruza o químico e o natural na busca do bem-estar, de forma articulada em suas crenças[cite: 2]."},
-        {d:"medio", q:"O que propôs Paul Hunt sobre a deficiência (modelo social)?", o:["A deficiência mental é o problema central.","A distinção crítica é que a limitação afeta o corpo, enquanto a deficiência ocorre quando a sociedade exclui as pessoas 'imperfeitas'.","Os hospitais devem curar todas as deficiências de cadeira de rodas.","Deficiência afeta menos na sociedade capitalista."], a:1, j:"Paul Hunt (Stigma, 1966) criticou o modelo médico e lançou as bases do modelo social: a sociedade, ao não acomodar as diferenças físicas, cria a deficiência[cite: 1]."},
-        // Completando até 40 (Médias)
-        {d:"medio", q:"Qual destas competências NÃO pertence explicitamente ao SUS conforme a CF de 1988?", o:["Controlar produtos psicoativos.","Fiscalizar alimentos e água.","Regulamentar totalmente a fabricação de automóveis.","Ordenar a formação de recursos humanos na área de saúde."], a:2, j:"O SUS atua na fiscalização de alimentos e formação profissional (Art. 200), mas a regulamentação automotiva geral não é do seu escopo direto[cite: 4]."},
-        {d:"medio", q:"O financiamento do SUS ocorre de que forma principal?", o:["Exclusivamente pelos impostos federais da União.","Com doações internacionais e loterias.","Pelos orçamentos da Seguridade Social, compostos de forma tripartite (União, Estados e Municípios).","Pela cobrança de mensalidades proporcionais à renda do cidadão."], a:2, j:"O orçamento da seguridade social (União, Estados, DF, Municípios) destina de forma tripartite os recursos necessários ao SUS[cite: 4]."},
-        {d:"medio", q:"A sociologia condena o 'Etnocentrismo' nas práticas de saúde. O que isso afeta?", o:["O desenvolvimento de equipamentos modernos.","Pode desvalorizar e discriminar culturalmente pacientes como imigrantes ou populações indígenas, prejudicando o vínculo terapêutico.","A contabilidade do hospital.","A emissão de receitas médicas eletrônicas."], a:1, j:"Julgar os pacientes pelos padrões culturais próprios do profissional pode alienar grupos marginalizados e destruir o acolhimento[cite: 2]."},
-        {d:"medio", q:"A abordagem da doença crônica como 'rutura biográfica' (Michael Bury) destaca que:", o:["As doenças crônicas mudam apenas o corpo físico.","Doenças crônicas destroem as estruturas narrativas e expectativas futuras do indivíduo, obrigando-o a ressignificar sua identidade.","É mais fácil viver com o diabetes do que ter gripe.","Ninguém sobrevive a doenças crônicas hoje."], a:1, j:"Bury e Locker destacam que a cronicidade afeta o percurso de vida, transformando identidades e exigindo respostas emocionais e biográficas[cite: 2]."},
-        {d:"medio", q:"Na estratégia da Política Nacional de Saúde Bucal, o fluoreto na água de abastecimento é:", o:["Considerado inútil devido aos cremes dentais.","Entendido como a forma mais abrangente, socialmente justa e fundamental de prevenção em saúde pública.","Obrigatório apenas na zona rural.","Proibido por ser tóxico na dose recomendada."], a:1, j:"A fluoretação das águas é uma diretriz de promoção da saúde essencial por ser a forma mais abrangente e socialmente justa de acesso ao flúor[cite: 5]."},
-        {d:"medio", q:"A Lei 8142/90 condiciona repasses financeiros à elaboração de 'Planos de Saúde'. O que isso garante?", o:["O planejamento descentralizado com aprovação das bases estaduais/municipais e seus conselhos.","Que o Estado Federal pague os médicos privados.","Que o prefeito não precise prestar contas.","O fechamento de postos não lucrativos."], a:0, j:"Ter um Plano e Fundo de Saúde amarra os recursos ao planejamento e fiscalização do Conselho de Saúde local, forçando a organização técnica e social[cite: 4]."},
-        {d:"medio", q:"O que a sociologia avalia na medicalização do parto e gravidez?", o:["O retorno às parteiras sem higiene.","A transferência do controle do corpo da mulher e de processos naturais para as mãos da tecnocracia médica predominantemente masculina.","Um progresso livre de críticas e falhas clínicas.","Apenas o lado financeiro dos convênios."], a:1, j:"Críticas feministas (Oakley) mostram que a gravidez foi rotulada como doença de risco, retirando o protagonismo da mulher em favor do especialista médico[cite: 1, 2]."},
-        {d:"medio", q:"Em sociologia médica, como a 'Epidemiologia Social' tenta explicar as desigualdades em saúde (Relatório Acheson)?", o:["Mostrando que doenças infecciosas dependem apenas do vírus.","Estudando como estruturas como pobreza, distribuição de renda, poluição e más condições afetam as taxas de doenças na população.","Demonstrando que os pobres geneticamente contraem mais doenças crônicas.","Isolando os fatores individuais."], a:1, j:"Epidemiologistas sociais analisam as ligações causais entre variáveis sociais/estruturais e a distribuição e incidência das doenças[cite: 1]."},
-        {d:"medio", q:"Nas Diretrizes de Saúde Bucal, a ação para prevenir o câncer de boca engloba:", o:["Apenas distribuir panfletos na TV.","Exames preventivos de detecção precoce (busca ativa nas visitas domiciliares) e garantia da rede para biópsias e tratamento secundário/terciário.","A proibição do consumo de café.","Contratar especialistas oncológicos só em capitais."], a:1, j:"As diretrizes reforçam exames na atenção básica (busca ativa) e um fluxo garantido na rede de maior complexidade para biópsia/tratamento[cite: 5]."},
-        {d:"medio", q:"Giddens aponta que o crescimento dos transtornos alimentares globalmente está atrelado a:", o:["Uma mutação viral contemporânea na Ásia.","A expansão transnacional e a globalização das imagens e ideais de beleza femininos da 'cultura da modernidade' ocidental.","Falta de comida orgânica acessível.","Um retrocesso econômico repentino em países desenvolvidos."], a:1, j:"A 'cultura de modernidade' globalizou as noções da beleza ocidental, espalhando obsessões com dietas para o Oriente Médio, Ásia e América Latina[cite: 1]."},
-        {d:"medio", q:"O SUS permite que a gestão transfira dinheiro público para cobrir falhas de empresas estrangeiras com fins lucrativos em saúde?", o:["Sim, sempre que precisarem de ajuda governamental.","Não, o Artigo 199 proíbe a destinação de recursos públicos para auxílios/subvenções às instituições privadas com fins lucrativos.","Sim, desde que a empresa invista em tecnologia.","A lei é omissa sobre o tema."], a:1, j:"É expressamente vedada a destinação de recursos ou subvenções a instituições privadas com fins lucrativos, bem como controle de capital estrangeiro[cite: 4]."},
-        {d:"medio", q:"Qual o peso da 'intersetorialidade' na Política de Saúde Bucal e no SUS?", o:["Nenhum, pois saúde resolve todos os seus problemas nos hospitais.","Envolver diferentes setores (educação, saneamento, meio ambiente) para atuar nas causas amplas da doença e não apenas no tratamento do sintoma.","Refere-se a terceirizar a saúde para o setor privado.","Diz respeito à união apenas de médicos e dentistas na mesma sala."], a:1, j:"A intersetorialidade reconhece os determinantes sociais da saúde, exigindo atuação articulada do SUS com setores de esporte, educação, saneamento, etc.[cite: 5]."},
-        {d:"medio", q:"Na análise sociológica de Goffman, qual a relação do estigma com a SIDA (AIDS)?", o:["Houve uma total aceitação rápida da doença sem julgamento.","O estigma foi agravado por imputações morais associadas ao pertencimento de categorias 'marginais' (toxicodependentes, homossexuais).","A doença imunológica curou preconceitos de classe na medicina.","Pacientes com AIDS não podiam ser estigmatizados devido à força da lei civil."], a:1, j:"O estigma da SIDA (AIDS) uniu temores de doenças fatais e preconceitos sobre sexualidades, gerando a figura do doente 'culpado e castigado'[cite: 2]."},
-        {d:"medio", q:"Segundo a Lei 8.080, qual é a definição de 'Saúde do Trabalhador' no SUS?", o:["Distribuição de atestados médicos na firma.","Conjunto de atividades (VS e VE) visando a promoção, recuperação e reabilitação de trabalhadores submetidos a riscos advindos do trabalho.","Exames demissionais feitos obrigatoriamente no posto.","Tratar exclusivamente dos funcionários do SUS."], a:1, j:"Saúde do Trabalhador (Lei 8080) é um conjunto de atividades nas frentes de vigilância sanitária e epidemiológica voltado aos riscos laborais[cite: 4]."},
-        {d:"medio", q:"O modelo de 'Trabalho em Equipe' na Saúde da Família se opõe diretamente ao:", o:["Modelo do médico 'solitário' e hospitalocêntrico (privatista).","Conceito de clínica ampliada.","Paradigma do autocuidado domiciliar.","Atendimento referenciado para CREO."], a:0, j:"A ESF força a multiprofissionalidade no território, opondo-se ao antigo modelo de trabalho técnico-odontológico isolado e de medicina hospitalocêntrica curativista[cite: 4, 5]."},
-        {d:"medio", q:"Para a sociologia do corpo, a tecnologia social difere da tecnologia material por:", o:["Ser baseada na internet das coisas.","Envolver as intervenções e rotinas de disciplinamento regular do corpo (como dietas e autocontrole), influenciadas pela sociedade para moldar os corpos.","Ser unicamente maquinário hospitalar.","Tratar-se de cirurgias experimentais a laser."], a:1, j:"Foucault (e Giddens) observam que 'tecnologias sociais' são os processos contínuos pelo qual o indivíduo tenta criar/controlar o corpo, diferindo das ferramentas físicas do hospital[cite: 1]."},
-        {d:"medio", q:"Qual diretriz de Saúde Bucal envolve reabilitação protética?", o:["É exclusiva para hospitais privados não ligados ao SUS.","Deve ser estritamente terceirizada para laboratórios fora do SUS.","Atenção secundária, mas agora também se propõe incluir as fases clínicas das próteses elementares na própria atenção básica para maior acesso.","Está banida pela lei da Reforma Sanitária."], a:2, j:"A Diretriz propõe incluir a fase clínica da prótese na atenção básica, ampliando o acesso à população historicamente mutilada e focada na extração[cite: 5]."},
-        {d:"medio", q:"Como a mudança no perfil das mortes globais afeta o modelo médico tradicional?", o:["O modelo não precisa mudar pois as infecções voltaram ao ápice.","O aumento drástico das doenças degenerativas/crônicas exige um novo paradigma voltado ao acompanhamento e estilos de vida em vez de 'curas rápidas'.","Fez com que os médicos atuassem exclusivamente na sala de emergência.","Transformou a pediatria no ramo mais caro de todos."], a:1, j:"A 'transição da saúde' gerou o aumento na expectativa de vida e no peso das doenças degenerativas que a biomedicina da 'cura imediata' tem dificuldade em lidar[cite: 1]."},
-        {d:"medio", q:"Na concepção sociológica atual, por que não é recomendável culpar o doente pelo seu adoecimento ('culpabilização da vítima')?", o:["Porque o doente geralmente possui fortunas para gastar.","Pois a maioria das 'escolhas de vida saudáveis' (dieta, ginástica) também são condicionadas e restritas pela renda e pelas condições sociais estruturais de classe.","O doente crônico é intocável pelas leis civis.","A ciência biológica prova que 100% da culpa é do próprio DNA."], a:1, j:"A sociologia critica campanhas de saúde que ignoram que hábitos ruins estão muitas vezes ancorados na falta de condições materiais ou estresses estruturais[cite: 2]."},
-        {d:"medio", q:"Como Tavares aborda o papel da internet na informação da saúde?", o:["Como o único canal válido hoje.","Como substituta definitiva da figura do médico de família.","Como um recurso a mais, mas que tem criado a ilusão de que as antigas aprendizagens e fontes informais e formais deixaram de importar.","É proibida pela ANVISA no SUS."], a:2, j:"Estudos mostram que a internet complementa a busca de informação em saúde (pericialização dos leigos), mas de modo contingente; há um efeito 'fetiche' de achar que ela apagou os métodos tradicionais[cite: 2]."},
+/* MÉDIAS (40) */
+{d:"medio", q:"A Lei 8.080/90 dispõe principalmente sobre:", o:["Participação social","Condições para promoção e organização dos serviços","Apenas repasses federais","Privatização"], a:1, j:"Lei 8080 estrutura a promoção, proteção, recuperação e organização do SUS."},
+{d:"medio", q:"Quais requisitos os Municípios precisam ter para receber dinheiro do Fundo Nacional (Lei 8142)?", o:["Fundo e Conselho de Saúde, Plano e PCCS","Apenas Fundo","Apenas Prefeito eleito","Não há requisitos"], a:0, j:"Lei 8142 exige Fundo, Conselho, Plano, Relatórios e PCCS."},
+{d:"medio", q:"'Organizar a rede por base territorial e indicadores epidemiológicos' refere-se à:", o:["Universalidade","Regionalização","Hierarquização","Vigilância"], a:1, j:"A regionalização mapeia os recursos no território com base epidemiológica."},
+{d:"medio", q:"Instituições privadas filantrópicas no SUS têm:", o:["Proibição","Preferência para participar de forma complementar","Exclusividade","Apenas direito a vender remédios"], a:1, j:"A CF/88 dá preferência às filantrópicas no caráter complementar."},
+{d:"medio", q:"Na Política Brasil Sorridente, as 'Linhas do Cuidado' significam:", o:["Filas de espera","Ações organizadas por ciclos de vida (criança, idoso) com fluxo garantido","Fio dental","Tratamentos de canal"], a:1, j:"Organizam os fluxos de acordo com as especificidades etárias."},
+{d:"medio", q:"O SUS é responsável por formular a política de:", o:["Saneamento básico (participar)","Transporte público","Armamento","Telecomunicações"], a:0, j:"Art. 200 IV: Participar da formulação da política de saneamento básico."},
+{d:"medio", q:"Qual a diferença entre Vigilância Epidemiológica e Sanitária?", o:["Epidemiológica foca no meio ambiente; Sanitária em vírus.","Sanitária intervém em riscos do meio/produtos; Epidemiológica foca nos determinantes de doenças.","Não há diferença.","Ambas são exclusivas de portos."], a:1, j:"VS foca em bens/serviços/ambiente; VE foca em surtos/determinantes nas populações."},
+{d:"medio", q:"O que são CREOs ou CEOs na saúde bucal?", o:["Hospitais gerais","Centros de Referência de Especialidades (Atenção Secundária)","Postos rurais","Escolas técnicas"], a:1, j:"São unidades secundárias que recebem casos referenciados da atenção básica."},
+{d:"medio", q:"As ações de educação em saúde bucal devem ter caráter:", o:["Impositivo","Emancipatório, visando a autonomia do sujeito","Apenas informativo biológico","Terrorista (mostrar cáries)"], a:1, j:"As diretrizes focam num processo pedagógico para a cidadania e autonomia."},
+{d:"medio", q:"O trabalho em equipe na saúde bucal opõe-se ao:", o:["Trabalho coletivo","Modelo do CD isolado e curativista","Sistema SUS","Acolhimento"], a:1, j:"Rompe com o isolamento histórico da profissão no consultório."},
+{d:"medio", q:"Quem convoca extraordinariamente uma Conferência de Saúde?", o:["Apenas o Presidente","O Poder Executivo ou o Conselho de Saúde","O Juiz","População por abaixo-assinado"], a:1, j:"Lei 8142 diz que pode ser convocada pelo Executivo ou Conselho."},
+{d:"medio", q:"A intersetorialidade (Brasil Sorridente) reconhece que a saúde é determinada por:", o:["Genes apenas","Fatores sociais, ambientais e econômicos","Vontade divina","Apenas acesso ao dentista"], a:1, j:"Exige ações além do posto, englobando água, renda, moradia."},
+{d:"medio", q:"Na atenção secundária bucal, o foco das Diretrizes de 2004 incluiu de forma inovadora:", o:["Próteses dentárias elementares na rede básica e centros","Cirurgia plástica de nariz","Apenas ortodontia estética","Fechamento de clínicas"], a:0, j:"Inclusão da reabilitação protética para reverter o histórico mutilador."},
+{d:"medio", q:"O financiamento da União baseia-se na entrega de recursos:", o:["Aleatória","Regular e automática (Fundo a Fundo)","Apenas se sobrar dinheiro","Em formato de empréstimo com juros"], a:1, j:"O repasse do FNS aos fundos estaduais/municipais é regular e automático."},
+{d:"medio", q:"O princípio que determina organizar o SUS de forma a não haver sobreposição administrativa é:", o:["Regionalização","Direção Única","Privatização","Descentralização total sem regras"], a:1, j:"A direção é única em cada esfera de governo."},
+{d:"medio", q:"O diagnóstico da comunidade para planejar ações de saúde bucal baseia-se em:", o:["Lucro financeiro","Epidemiologia e territorialização","Opinião do prefeito","Tabelas do convênio privado"], a:1, j:"O perfil epidemiológico dita as prioridades de ação local."},
+{d:"medio", q:"A quem compete normatizar e coordenar nacionalmente o Sistema Nacional de Sangue?", o:["Aos estados","À União (direção federal do SUS)","Aos Municípios","Aos hemocentros privados"], a:1, j:"Na Lei 8080, coordenar o sistema de sangue é competência federal."},
+{d:"medio", q:"O acesso aos CREOs deve ser feito mediante:", o:["Demanda livre (qualquer um entra)","Referência da Atenção Básica","Pagamento de taxa","Sorteio"], a:1, j:"A atenção secundária recebe fluxos hierarquizados pela primária."},
+{d:"medio", q:"Segundo a CF 88, a lei disporá sobre remoção de órgãos vedando:", o:["A doação","A transfusão","A comercialização","A pesquisa"], a:2, j:"É vedado todo tipo de comercialização de órgãos/tecidos."},
+{d:"medio", q:"Como a saúde antes de 1988 segmentava a população?", o:["Todos iguais","Previdentes (INAMPS), Indigentes (Saúde Pública/Filantropia) e Ricos (Privado)","Todos indigentes","Só existia sistema privado"], a:1, j:"O INAMPS cobria só carteira assinada; o resto dependia de filantropia/SUS restrito."},
+{d:"medio", q:"Segundo as Diretrizes (2004), o vínculo entre profissional e usuário gera:", o:["Dependência química","Corresponsabilização e eficácia terapêutica","Perda de tempo","Lucro"], a:1, j:"Vínculo permite intervenções mais eficazes no território."},
+{d:"medio", q:"Nas ações para câncer de boca, a atenção básica deve:", o:["Fazer quimioterapia","Fazer busca ativa, exame preventivo e encaminhar para biópsia","Ignorar casos graves","Atender apenas crianças"], a:1, j:"O posto detecta as lesões iniciais preventivamente e encaminha na rede."},
+{d:"medio", q:"As comissões intersetoriais no âmbito nacional são subordinadas ao:", o:["Presidente","Conselho Nacional de Saúde","Ministro","STF"], a:1, j:"A Lei 8080 atrela as comissões intersetoriais ao CNS."},
+{d:"medio", q:"A lei 8.080 define Saúde do Trabalhador como:", o:["Licença remunerada","Conjunto de atividades preventivas, de VS e VE, visando saúde laboral","Clínica de repouso","Apenas exames admissionais"], a:1, j:"São ações de vigilância sanitária e epidemiológica no ambiente de trabalho."},
+{d:"medio", q:"O papel do Ministério da Saúde na formulação de políticas é:", o:["Executar vacinas nas casas","Planejamento técnico e coordenação nacional","Vender remédios","Atender em UPAs"], a:1, j:"A união foca em formulação e coordenação nacional (macro)."},
+{d:"medio", q:"Na representação paritária dos Conselhos (50% usuários), como são divididos os outros 50%?", o:["25% Profissionais, 25% Gestores/Prestadores","50% Políticos","25% Médicos, 25% Enfermeiros","100% Governo"], a:0, j:"A metade institucional divide-se entre trabalhadores (25%) e governo/prestadores (25%)."},
+{d:"medio", q:"Qual a função do Relatório de Gestão (Lei 8142)?", o:["Provar que o hospital deu lucro","Comprovar a aplicação de recursos do Fundo e embasar o planejamento","Punir pacientes","Vender equipamentos"], a:1, j:"O relatório presta contas das ações e dos fundos públicos."},
+{d:"medio", q:"O modelo de Vigilância à Saúde busca superar:", o:["A saúde pública","O modelo hospitalocêntrico e fragmentado","A prevenção primária","O SUS"], a:1, j:"A vigilância integra promoção e cura contra o velho curativismo."},
+{d:"medio", q:"As diretrizes de saúde bucal (2004) criticam o sistema antigo porque ele focava apenas em:", o:["Jovens e prevenção coletiva","Escolares, com ações mutiladoras nos adultos","Prevenção para idosos","Próteses universais"], a:1, j:"Historicamente, o foco era no escolar, deixando os adultos à mercê de extrações."},
+{d:"medio", q:"Em saúde bucal, o planejamento do cuidado baseado em risco serve para:", o:["Atender primeiro quem é rico","Aplicar a Equidade, focando intervenções em quem mais necessita","Excluir pacientes do posto","Gastar menos água"], a:1, j:"A classificação de risco operacionaliza a equidade."},
+{d:"medio", q:"Segundo a Lei 8.080, incrementar o desenvolvimento científico é atribuição do:", o:["Setor Privado exclusivamente","Sistema Único de Saúde (SUS)","CNPq isoladamente","Ministério da Educação"], a:1, j:"Art. 200: O SUS deve incrementar a pesquisa em sua área de atuação."},
+{d:"medio", q:"O SUS formula a política de medicamentos?", o:["Não, apenas distribui","Sim, formula e participa da produção","Isso é tarefa exclusiva das farmácias","Só para o câncer"], a:1, j:"A Lei e a CF dão ao SUS o dever de participar da produção e política de remédios."},
+{d:"medio", q:"O que a 8ª CNS teve de inovador na sua composição?", o:["Só teve militares","Foi a primeira com ampla participação da sociedade civil e usuários","Foi feita em sigilo","Durou 10 anos"], a:1, j:"Foi o grande marco democrático da participação popular pré-Constituinte."},
+{d:"medio", q:"A gestão estadual do SUS tem papel primário de:", o:["Atender todos no posto de saúde","Coordenar a rede regionalizada e apoiar municípios","Exportar vacinas","Extinguir UPAs"], a:1, j:"O Estado apoia técnica e financeiramente os municípios na rede."},
+{d:"medio", q:"O acolhimento deve ser feito por:", o:["Apenas o médico","Toda a equipe multiprofissional","Apenas o recepcionista","Guardas de segurança"], a:1, j:"O acolhimento é postura de toda a equipe na responsabilização da queixa."},
+{d:"medio", q:"A CF define as ações de saúde como de:", o:["Monopólio estatal","Relevância Pública","Propriedade privada","Livre mercado sem regras"], a:1, j:"Art. 197 define as ações de saúde como de relevância pública."},
+{d:"medio", q:"Participação complementar privada no SUS ocorre mediante:", o:["Acordo verbal","Contrato de direito público ou convênio","Decreto presidencial diário","Leilão"], a:1, j:"Formaliza-se via contrato público ou convênio (Art 199)."},
+{d:"medio", q:"As diretrizes bucais exigem conhecer a cultura do usuário para:", o:["Cobrar consultas","Garantir um atendimento eficiente sem imposições verticais (etnocentrismo)","Cumprir cota estatística","Julgar moralmente"], a:1, j:"Reconhecer as diferenças culturais melhora o vínculo e o cuidado."},
+{d:"medio", q:"A fluoretação das águas visa diminuir qual agravo epidemiológico?", o:["Câncer bucal","Traumatismo","Cárie dentária em massa","Gengivite"], a:2, j:"É o método populacional mais eficaz contra a cárie."},
+{d:"medio", q:"O SUS deve fiscalizar produtos psicoativos?", o:["Não","Sim","Apenas a Polícia Federal","Apenas nas escolas"], a:1, j:"O SUS atua na fiscalização de substâncias psicoativas e tóxicas (Art 200)."},
 
-        // ================= DIFÍCEIS (40) =================
-        {d:"dificil", q:"De que forma o Art. 197 da CF classifica as ações de saúde, justificando a intervenção reguladora do Estado?", o:["Como serviço privado essencial.","Como de 'Relevância Pública', permitindo ao Poder Público dispor sobre a regulamentação, fiscalização e controle.","Como monopólio inalienável e estatal absoluto, banindo empresas.","Como filantropia obrigatória."], a:1, j:"O Art. 197 define-as como de relevância pública. A execução pode ser por terceiros, mas o Estado detém a regulamentação/fiscalização[cite: 4]."},
-        {d:"dificil", q:"O que a sociologia da saúde chama de 'Embodiment' na teoria social?", o:["É a estatística da obesidade mórbida mundial.","É o controle dos embriões antes do nascimento (eugenia).","A superação da dicotomia mente/corpo, percebendo a experiência vivida e encorporada, onde a carne carrega marcas das realidades sócio-materiais do dia a dia.","O mapeamento do DNA em fetos recém-nascidos."], a:2, j:"O conceito de 'Embodiment' aponta o humano totalmente encorporado no contexto sociocultural (corpo interior/físico + exterior/sociedade)[cite: 2]."},
-        {d:"dificil", q:"Qual autor é famoso por estudar as instituições asilares/psiquiátricas e descrever os danos do Estigma ao indivíduo desviante na sociedade?", o:["Erving Goffman.","Talcott Parsons.","Emile Durkheim.","Richard Wilkinson."], a:0, j:"Erving Goffman cunhou o clássico conceito do Estigma, onde identidades divergentes geram desqualificações sociais em instituições ou relações cotidianas[cite: 1, 2]."},
-        {d:"dificil", q:"Quais esferas do governo são afetadas pela Lei 8.142 quanto às transferências de recursos?", o:["Apenas do Município para a União.","Apenas de empréstimos internacionais para Estados.","Transferências fundo a fundo, da União para os Estados e Municípios (regular e automático se preenchidos os requisitos institucionais e sociais).","Apenas as doações da assistência social em épocas festivas."], a:2, j:"A Lei 8142 normatizou o repasse 'fundo a fundo' intergovernamental e obrigou a criação dos Fundos e Conselhos de Saúde para o recebimento de verbas[cite: 4]."},
-        {d:"dificil", q:"Em 'Saúde e Desigualdades' (Relatório Black vs Acheson), os governos conservadores no Reino Unido focaram em qual explicação sociológica para as disparidades?", o:["Na teoria materialista da pobreza global.","Na tese de Wilkinson sobre coesão de renda e socialização.","Focaram em explicações culturais/comportamentais (estilo de vida voluntário, dietas) isentando a responsabilidade do Estado pelos fatores estruturais da miséria.","Focaram em reconstruir o sistema asilar psiquiátrico."], a:2, j:"Governos conservadores ignoraram as bases materiais dos relatórios e optaram por culpabilizar o estilo de vida das vítimas, evadindo-se das reformas na habitação e renda[cite: 1]."},
-        {d:"dificil", q:"Na sociologia de Foucault, o exame de biometria populacional (monitoramento de taxa de nascimentos, vacinas e epidemias) é fruto do:", o:["Acordo com a ONU de direitos humanos civis de terceira geração.","Biopoder do Estado que começou a tratar a população física como um 'recurso e corpo social' fundamental para a economia e a defesa militar da nação.","Filantropismo voluntário das elites modernas.","Desejo popular expresso nas eleições do século 18."], a:1, j:"A ascensão da demografia e censos deu-se porque o Estado viu a população não mais como súditos no chão do rei, mas como um corpo produtivo a ser regulado cientificamente e politicamente[cite: 1]."},
-        {d:"dificil", q:"Como a ATF (Aplicação Tópica de Flúor) coletiva é politicamente decidida segundo as diretrizes ministeriais em saúde bucal?", o:["Aplicação irrestrita a 100% da população para consumir verbas do FNS.","Restrita ao consultório para procedimentos da dentística avançada, pagando-se os especialistas da atenção secundária.","Recomendada em base epidemiológica: para locais sem flúor na água ou que há menos de 5 anos tiveram flúor, ou onde há alto CPOD aos 12 anos e baixo percentual livres de cárie.","Ela foi banida na nova estruturação da ESF rural."], a:2, j:"A ATF em escala coletiva deve ser focada no risco epidemiológico de comunidades não adequadamente expostas ao flúor da água de abastecimento ou com péssimos indicadores preventivos[cite: 5]."},
-        {d:"dificil", q:"A 'medicalização da reprodução e infertilidade' mostra o poder médico por emitir:", o:["Pareceres biológicos totalmente livres de influência cultural ocidental sobre a família.","Diagnósticos de esterilidade irremediável pautados somente em genética darwiniana.","Apenas normas operatórias de cirurgias da bacia feminina.","Juízos morais/sociais disfarçados de juízos clínicos que ditam acesso a terapias conforme as noções elitistas sobre quem deve e quem não deve procriar (estado civil, sexualidade)."], a:3, j:"A infertilidade tratada como doença abre espaço ao médico atuar como árbitro moral sobre modelos de família 'corretos' disfarçados com a autoridade científica da reprodução assistida (RMA)[cite: 2]."},
-        {d:"dificil", q:"No SUS, qual princípio trata de alocar os recursos diferenciadamente para compensar profundas lacunas e carências históricas de vulneráveis?", o:["Solidariedade previdenciária.","Integralidade clínica em exames de sangue seriados.","Equidade, traduzindo-se na prática de 'dar mais a quem precisa de mais'.","Isolamento hierárquico nos CREOs hospitalares centrais."], a:2, j:"A equidade rejeita a igualdade plana abstrata para favorecer o tratamento desigual e protetivo focado nas necessidades (condicionantes sociais, geográficos, raciais) distintas do cidadão[cite: 3]."},
-        {d:"dificil", q:"No 'papel de doente' de Parsons (funcionalismo), a doença é entendida institucionalmente como:", o:["Uma bênção de libertação capitalista que quebrava com a exploração do trabalhador na esteira de produção.","Um desvio disfuncional do sistema, já que a incapacidade atrapalha a cadeia de produção e obrigações do sistema social, justificando a imposição do controle médico para restaurar a ordem orgânica.","Um fato social irrelevante aos olhos macroeconômicos.","Um protesto político revolucionário deliberado das minorias excluídas politicamente."], a:1, j:"Na escola funcionalista de Parsons, a doença ameaça o consenso da máquina social pois quebra deveres. O 'papel de doente' existe como válvula social regulada pela chancela da ciência curativa[cite: 1]."},
-        {d:"dificil", q:"O artigo 199 da CF veda o aporte de recursos públicos às empresas com fins lucrativos. Qual é a exceção à exploração estrangeira de saúde disposta no Brasil?", o:["Clínicas estéticas americanas de franquia isentas de ISS.","Transplantes apenas em solo da Europa Ocidental via turismo.","Laboratórios oncológicos controlados pelo FMI.","Ela é vedada pela CF 'salvo nos casos previstos em lei' (o que futuramente abriu brechas na legislação infraconstitucional de mercado para áreas específicas da pesquisa ou hospitais da lei 13.097)."], a:3, j:"O artigo 199 proíbe o capital estrangeiro salvo nos casos autorizados em Lei federal regulamentar posterior à própria Constituição, onde a participação internacional adentrou segmentos de ponta em filantropia/lucro em atualizações recentes da CF[cite: 4]."},
-        {d:"dificil", q:"Para a sociologia interacionista simbólica (em contraste a Parsons), como se analisa a cronicidade da doença?", o:["Focando nos balanços do Estado sobre os gastos com quimioterápicos.","Focando em desconstruir os germes patogênicos no microscópio biológico das UTIs.","Como a doença afeta os ritos vitais e como as pessoas desenvolvem significados, negociações interpessoais e táticas minúsculas e difíceis para lidar com a dor de forma ativa perante terceiros.","Ignorando a visão do doente."], a:2, j:"Os interacionistas não olham o macro-sistema ou o mero 'papel social funcionalista'. Estudam a luta pelo sentido diário da vida do indivíduo afetado e suas adaptações interativas à doença e à vizinhança[cite: 1]."},
-        {d:"dificil", q:"Dentro da política bucal, a prioridade nos agendamentos da atenção básica em saúde bucal deve dar urgência absoluta a:", o:["Escovação em turmas escolares rurais.","Ações curativas estéticas em pacientes crônicos edêntulos na área de ortodontia plástica reparadora.","Fluoretação em todos os recém-nascidos da vila local.","Casos de dor, infecção e sofrimento."], a:3, j:"As diretrizes são taxativas de que a prioridade de acolhimento nos atendimentos imediatos sem bloqueios prévios (demanda expressa) ocorre sob as queixas e infecções focais de grave tormento biológico[cite: 5]."},
-        {d:"dificil", q:"Qual o modelo que critica o sistema inglês do 'OPCS' em avaliação de incapacidades por inquirir as falhas anatômicas em vez dos degraus da rua?", o:["O modelo higienista biomédico central de Mike Oliver na Revolução Industrial do Século XIX.","O modelo social da deficiência (Mike Oliver), que re-escreveu as perguntas para investigar a barreira arquitetônica e a exclusão atitudinal no capitalismo assalariado.","O modelo filantrópico tradicional da Caridade Religiosa vitoriana que curava com esmolas estatais.","O modelo previdenciário de benefício por afastamento por doença contagiosa irreversível em surtos tropicais isolados da Ásia."], a:1, j:"Oliver transformou as questões do OPCS provando que a deficiência era falha da 'sociedade': não se pergunta se a pessoa pode subir a escada, mas por que a sociedade construiu escadas impedindo acesso no mundo moderno e hostil[cite: 1]."},
-        {d:"dificil", q:"O que a sociologia descreve como a 'pericialização dos saberes leigos' nas últimas décadas?", o:["A transformação imediata de curandeiros em diretores técnicos nos hospitais do SUS via conselhos.","A exclusão sumária dos exames físicos nos postos rurais.","A população assimilando termos da biomedicina (ex: taxa do colesterol, exames) nas práticas populares via mídia e exigindo papéis de consumidores co-gestores em consultórios num contrato mais igualitário e tenso perante a medicina.","O descarte geral dos estudos biológicos pelas curas folclóricas locais de indígenas rurais contra vacinas em massa."], a:2, j:"Pacientes informados misturam terminologias especializadas na fala cotidiana via internet/bula. A fronteira expert/leigo fica porosa. A assimetria de poder é pressionada mas o jargão é apropriado[cite: 2]."},
-        {d:"dificil", q:"As diretrizes da saúde bucal adotam os fluxos como parte essencial de qual diretriz do SUS?", o:["Centralização do Orçamento.","Equidade de Exceção Isolada de Capitais Estaduais com Hospitais Universitários sem relação externa em fluxo orgânico ou administrativo de base.","Regionalização e Hierarquização de Complexidade."], a:2, j:"O trabalho por 'linhas do cuidado' obriga a ter portas de entrada conectadas aos centros CREOs ou hospitais terciários (encaminhamento e contra-referência no tecido regionalizado hierarquizado) baseados em níveis tecnológicos e geográficos unificados da rede SUS na Lei Orgânica[cite: 3, 5]."},
-        {d:"dificil", q:"Segundo a Lei 8.080, 'Colaborar na proteção do meio ambiente, nele compreendido o do trabalho' é função:", o:["Do INSS.","Do Ministério da Agricultura e do Trabalho com exclusividade.","Do Sistema Único de Saúde, cujas atribuições expandiram muito o conceito de saúde no país.","Da Agência da Saúde Suplementar (ANS)."], a:2, j:"A Lei 8080 rompeu o modelo da doença biológica integrando o controle laboratorial, radiação e toxicologia nas fiscalizações e defesas ambientais/ocupacionais diretas ao escopo explícito do SUS[cite: 4]."},
-        {d:"dificil", q:"O aumento crescente das cronicidades mudou o foco histórico do atendimento 'Normal vs Desviante' porque:", o:["A doença tornou-se uma raridade e as pessoas morrem na UTI da noite para o dia em epidemias rápidas incuráveis da modernidade tardia industrial.","Como a cronicidade afeta e engloba grande maioria na velhice prolongada, a 'doença crônica' passa a configurar a 'normalidade' vital. A terapêutica volta-se à gerência/acomodação na vida e não na cura (o velho sistema biomédico focava em eliminar/isolar a crise patológica doente pontual para devolver logo à fabrica).","O foco isolou-se em vacinas universais que extinguem as dores articulares nas pessoas com mais de 70 anos.","Houve a exclusão forçada de idosos dos hospitais via constituição internacional europeia de risco clínico da velhice."], a:1, j:"As doenças crônicas derrubam a teoria de doença como um intervalo/desvio rápido (conceito de Parsons de normalidade); A normalidade torna-se administrar diabetes/hipertensão contínua, num novo biopoder cotidiano nas estatísticas do prolongamento de vida na velhice biopolítica moderna no Brasil/Mundo[cite: 2]."},
-        {d:"dificil", q:"Na análise dos 'modelos de deficiência', como os sociólogos médicos rebatem o 'Modelo Social Radical' de exclusão de corpos em cadeiras de roda de Oliver?", o:["Alegando que a doença afeta sim o espiritualismo cristão dos ossos.","Apontando que o modelo social falha ao negar e separar 'limitação e corpo': as dores crônicas biológicas em deficiências complexas causam limites e deficiências severas por si só que não são resolvidas magicamente pintando rampas ou quebrando discriminações sociais e barreiras laborais políticas no Estado.","Alegando que as rampas custam dinheiro aos impostos do estado capitalista moderno que está sofrendo crises com juros globais do FMI em queda livre.","Alegando que a medicina biomédica cura todo o DNA se tiver verbas financeiras."], a:1, j:"A crítica (ex: Watson & Shakespeare) alega que separar categoricamente a falha orgânica (limitação) da desvantagem da escada da calçada (deficiência da sociedade) ignora as lutas dolorosas/patológicas irremediáveis enfrentadas biofisicamente pelos pacientes com falhas graves em seus corpos de dor e debilitação motora natural sem cura que transcendem os obstáculos ou barreiras nas rampas arquitetônicas construídas pelo governo local socializado do país no ambiente externo adaptado politicamente ou não em obras de inclusão ou rampas das ruas inclusivas, resgatando efeitos de dor orgânica reais ignoradas por Oliver no modelo[cite: 1]."},
-        {d:"dificil", q:"O Movimento pela Reforma Sanitária (MRSB), através do CEBES e ABRASCO, criticou severamente:", o:["A descentralização das verbas na época do ditadura pois atrapalhava os hospitais centrais grandes.","O caráter preventivo que gastava muito em campanhas de escovação, preferindo o INAMPS tecnológico para toda população, e o foco em internação pública.","O acesso restrito aos segurados previdenciários e a centralização do atendimento no modelo médico hospitalocêntrico (Privatista-Liberal), defendendo um sistema único preventivo e universal pautado na democracia contra a ditadura.","As teorias marxistas."], a:2, j:"O MRSB exigiu integração Saúde Pública/Previdência, fim da dependência do recolhimento, foco nos determinantes sociais contra o complexo médico-industrial curativista que segregava massas não filiadas ao INAMPS, alavancando a 8ª CNS[cite: 3]."},
-        // Completando até 40 (Difíceis)
-        {d:"dificil", q:"No Art. 198 da CF de 1988, quais são as 3 diretrizes fundamentais estipuladas para a rede do Sistema Único?", o:["Centralização, Atendimento Restrito, Participação Privada.","Descentralização com direção única em cada esfera, Atendimento Integral (com prioridade às atividades preventivas) e Participação da Comunidade.","Municipalização restrita, Atenção Secundária, Faturamento Comunitário.","Regionalização estadual, Privatização secundária, Atendimento ambulatorial."], a:1, j:"Art. 198: Descentralização, Atendimento integral, Participação da comunidade. (A prioridade preventiva não exclui os serviços assistenciais)[cite: 4]."},
-        {d:"dificil", q:"A quem compete a ordenação da formação de recursos humanos na área da saúde?", o:["Exclusivamente ao Ministério da Educação.","Aos sindicatos patronais da medicina.","Ao SUS, que tem papel na formação e não apenas na assistência.","Somente ao Conselho Regional de Odontologia."], a:2, j:"A Lei 8080 incluiu no campo do SUS a ordenação da formação de RH na saúde, para que os profissionais se adéquem às necessidades epidemiológicas do sistema[cite: 4]."},
-        {d:"dificil", q:"O processo de 'construção da consciência sanitária' na Saúde Bucal propõe que o paciente:", o:["Siga cegamente a medicalização em todas as instâncias.","Aprenda técnicas escovatórias unicamente para evitar despesas futuras ao Estado sem qualquer ligação ao contexto biopsicossocial do individuo.","Torne-se capaz de autonomia, responsabilidade sobre sua saúde e consiga atuar no controle social e emancipação a partir das atividades de vínculo da equipe no território local do posto sem dependência exagerada de especialistas.","Aceite a automedicação diária sem consulta a exames físicos básicos da clínica médica ou testes e análises de dores dentais extremas."], a:2, j:"As diretrizes propõem autonomia (evitar medicalização extrema), e processos pedagógicos e intersetoriais em que a educação de saúde forma a consciência de direitos, construindo cidadania e controle popular no posto da comunidade do cidadão usuário[cite: 5]."},
-        {d:"dificil", q:"A respeito do SUS (CF, Art 200), o controle de teores nutricionais em alimentos é de responsabilidade de qual agência e legislação constitucional?", o:["Não há regulação na saúde sobre isso.","Atribuição dada ao SUS pela CF de 88 (Lei 8080 regula), no bojo de ações de Vigilância Sanitária em alimentos e bebidas de amplo espectro na segurança alimentar das populações brasileiras consumistas de industrializados regulados por normas públicas sanitárias em vigor na pauta.","Exclusividade do Ministério da Agricultura (Sem interações com SUS).","Apenas fiscalização de laboratórios europeus sem validade de leis nacionais em portos locais ou estradas do Mercosul interno e fronteiras estaduais municipais abertas às compras da vigilância da União Européia."], a:1, j:"O SUS fiscaliza alimentos, compreendendo o teor nutricional, além de bebidas e água[cite: 4]."},
-        {d:"dificil", q:"O que a socióloga Annandale e outros criticam a respeito do modelo parsoniano do doente?", o:["Ele foca demais nos exames de sangue laboratorial moderno das máquinas clínicas.","Não leva em conta que as pessoas lutam passivamente a vida toda por dinheiro de auxílios-doença no seguro e não aceitam tratamento voluntário de pílulas curativas do cientista no leito ou maca de hospitais curativos normais ocidentais estatais capitalistas.","Falha em explicar o conflito de interesses na saúde (médicos com lucros capitalistas contra os pacientes submetidos às regras) e as barreiras que classes/racismo/gênero impõem no 'fácil acesso' a esses privilégios dos atestados funcionais e direitos temporários nas redes médicas dominantes capitalistas das cidades do mundo desenvolvido analisado funcionalmente e harmonicamente por ele na universidade teórica norte americana dele do pós guerra ocidental.","Que é excessivamente genético."], a:2, j:"O funcionalismo de Parsons é criticado por assumir a 'harmonia do sistema', ignorando poderes assimétricos, conflitos de classes do marxismo sobre a estrutura hospitalar ou machismo médico e exploração de minorias nas exclusões atitudinais racistas e preconceitos na clínica ocidental desigual capitalista que a realidade da miséria na sociedade empurra contra pacientes leigos nas bases[cite: 1, 2]."},
-        {d:"dificil", q:"A transição de um paradigma que focava unicamente em curar infecções agudas em hospitais no século 20, para um que vigia cronicidades, é descrita nos textos (Nettleton) como uma mudança para o:", o:["Modelo do Isolamento em Masmorras.","Aprofundamento do monitoramento preventivo fora do hospital, com o doente tratado em comunidade enquanto 'pessoa' (Cuidado Contínuo e Educação de risco) em vez do 'paciente no leito' estritamente internado agudo na cirurgia biológica no centro técnico das cidades.","Fim da clínica do parto em lares de obstetrícia sem médicos das maternidades.","Especialismo estrito sem relação com o lar e a dieta alimentar, fortalecendo a separação entre médico isolado na montanha longe dos focos nas ruas ambientais abertas sem tecnologia cara e pesada que curou varíolas no império antigo asiático."], a:1, j:"Transformação da 'doença para a saúde, do hospital para a comunidade, de agudo para crônico, de tratamento para cuidado, do corpo patológico doente passivo objetificado para a pessoa encorporada ativa e biograficamente narrada' com base em gestão crônica e promoção social preventiva global com coesão de laços, etc[cite: 1, 2]."},
-        // Eu preencherei o array JSON via loop abaixo ou lógica condensada por limitações de espaço de output, as referências estão garantidas.
-    ];
+/* DIFÍCEIS (40) */
+{d:"dificil", q:"O Artigo 197 da CF afirma que cabe ao Poder Público dispor sobre a saúde, devendo sua execução ser feita:", o:["Exclusivamente pelo Estado","Diretamente ou através de terceiros/Pessoa Física/Jurídica privada","Apenas por ONGs internacionais","Apenas pelas Forças Armadas"], a:1, j:"O Poder Público regulamenta, mas a execução pode ser por terceiros (iniciativa privada)."},
+{d:"dificil", q:"Na Lei 8.080, qual o escopo de atuação que rompeu o modelo biomédico?", o:["Comprar hospitais","A inclusão da vigilância ambiental, saúde do trabalhador e política de sangue","Pagar salário aos médicos em dia","Criar planos de saúde privados"], a:1, j:"A Lei amplia a saúde para determinantes sociais, vigilâncias ambientais e do trabalhador."},
+{d:"dificil", q:"Por que a 8ª CNS de 1986 não se tornou lei imediatamente?", o:["Foi anulada","Foi um relatório político e diretriz social que precisou da Constituinte de 1988 para virar norma jurídica","Faltou dinheiro","Os médicos vetaram"], a:1, j:"A Conferência propôs as diretrizes que embasaram o texto constitucional dois anos depois."},
+{d:"dificil", q:"Segundo as Diretrizes de Saúde Bucal, o termo 'produção do cuidado' exige intervenção na:", o:["Macro-política de Brasília","Micro-política do processo de trabalho, reestruturando as relações de poder no consultório","Taxa Selic","Apenas na compra de resina"], a:1, j:"A produção do cuidado ocorre no encontro vivo profissional-usuário (micro-política)."},
+{d:"dificil", q:"A Lei 8142/90 foi criada como complemento rápido à 8080 por qual motivo?", o:["Para criar hospitais novos","Para regulamentar os vetos do Executivo sobre participação popular e repasses fundo a fundo","Para privatizar o sangue","Para extinguir o INAMPS imediatamente"], a:1, j:"O Presidente vetou artigos sociais da 8080, forçando a edição rápida da 8142 para os repasses e conselhos."},
+{d:"dificil", q:"Como a Equidade atua perante a Universalidade no SUS?", o:["Elas são antagônicas e excludentes","A Equidade qualifica a Universalidade, garantindo que o acesso igualitário respeite as assimetrias e carências reais de cada grupo","A Equidade destrói a integralidade","A Universalidade proíbe a Equidade"], a:1, j:"Acesso universal, porém com priorização baseada em equidade (riscos maiores)."},
+{d:"dificil", q:"Para a Política Brasil Sorridente, a epidemiologia na atenção primária não deve ser apenas estatística acadêmica, mas:", o:["Ferramenta de planejamento para reorganizar a demanda e classificar riscos no território","Mecanismo para pedir mais verbas federais ilícitas","Prova para exames de residência","Substituta dos médicos"], a:0, j:"Os dados epidemiológicos devem nortear a prática diária e reorganização do cuidado."},
+{d:"dificil", q:"O que diz o Artigo 199, § 2º sobre recursos para empresas com fins lucrativos?", o:["Podem receber se prestarem bom serviço","É permitida a subvenção em anos pares","É VEDADA a destinação de recursos públicos para auxílios ou subvenções a entidades com fins lucrativos","Podem receber dinheiro do FNS"], a:2, j:"O dinheiro público só financia filantrópicas/sem fins lucrativos (em auxílios), vedando lucrativas."},
+{d:"dificil", q:"Se a equipe de saúde bucal (ESB) atua isolada do PSF no município, o que acontece?", o:["Aumenta o lucro","Fere as diretrizes do Ministério que exigem inserção na lógica e território da Saúde da Família (Multiprofissionalidade)","Melhora a especialização","Não tem problema"], a:1, j:"A diretriz exige o fim do isolamento da odontologia em prol da ESF."},
+{d:"dificil", q:"O financiamento Tripartite do SUS significa que:", o:["Três bancos pagam a saúde","Três poderes (Exec, Leg, Jud) financiam","União, Estados e Municípios aplicam percentuais mínimos de seus orçamentos constitucionais na saúde","Apenas os três estados mais ricos pagam"], a:2, j:"Todos os três entes federativos compõem o custeio do sistema."},
+{d:"dificil", q:"Qual a função das ATF (Aplicação Tópica de Flúor) coletivas segundo a política bucal?", o:["Uso indiscriminado para gastar insumos","Ação estratégica focada em áreas sem flúor na água ou com alto índice de cáries (CPOD alto)","Substituir a escovação diária","Apenas para estética de adultos"], a:1, j:"As ATFs coletivas não são cegas, são pautadas no risco local epidemiológico."},
+{d:"dificil", q:"A formulação de políticas de 'saúde do trabalhador' deve englobar (Lei 8080):", o:["Apenas atestados falsos","Revisão de processos produtivos, riscos de maquinário e toxicologia das empresas","Pagamento de INSS apenas","Isolamento dos doentes"], a:1, j:"As ações incluem auditoria ambiental, toxicológica e processos de trabalho que causam doenças."},
+{d:"dificil", q:"Ao propor a Reabilitação na Atenção Básica, o Brasil Sorridente exige:", o:["Laboratórios de prótese em clínicas de alto luxo","O CD realizando a fase clínica/moldagem na própria UBS, articulado aos Laboratórios Regionais (LRPD)","Terceirização para convênios","Extinção da dentística"], a:1, j:"Descentraliza a fase clínica para o posto, usando redes de apoio laboratorial regional."},
+{d:"dificil", q:"Na lógica do modelo preventivo x curativo, as Diretrizes afirmam que:", o:["Devem existir separados","As ações preventivas, educativas e de recuperação curativa são indissociáveis num mesmo processo de cuidado","A cura deve ser abandonada para focar só na prevenção","A prevenção só funciona em ricos"], a:1, j:"Não há dicotomia; promove-se a clínica integral com profilaxia e cura combinadas."},
+{d:"dificil", q:"O SUS detém a responsabilidade direta de formular leis penais sobre drogas?", o:["Sim, é a PF do SUS","Não, o SUS participa da fiscalização e controle de psicoativos, mas a legislação penal é da Justiça","Sim, o Conselho de Saúde julga","O SUS não lida com drogas"], a:1, j:"O controle é sanitário e normativo sobre substâncias, não de código penal puro."},
+{d:"dificil", q:"O movimento sanitário foi influenciado nos anos 70 por qual contexto político?", o:["Revolução Francesa","Abertura do Império","Regime Militar (combate ao autoritarismo e demanda por democratização e direitos sociais)","Guerra Fria nos EUA"], a:2, j:"O MRSB nasceu na luta contra a ditadura, unindo saúde à democracia."},
+{d:"dificil", q:"O papel do gestor Estadual no financiamento dos CREOs é:", o:["Nenhum","Apenas construir o prédio","Co-financiar (ajudar o município e união) a custear a atenção secundária regionalizada","Pegar o dinheiro para hospitais centrais"], a:2, j:"A responsabilidade financeira nas redes especializadas é compartilhada."},
+{d:"dificil", q:"O modelo Privatista-Liberal antes de 88 caracterizava-se por ser:", o:["Hospitalocêntrico, biologista, curativo e tecnicista","Focado na atenção primária rural","Comunitário e xamânico","Apenas focado em idosos"], a:0, j:"Resumia-se na medicina focada na doença instalada e nos grandes equipamentos."},
+{d:"dificil", q:"A participação popular no SUS, além de legal, é um mecanismo de:", o:["Atrasar compras","Controle Social do Estado pela sociedade civil, garantindo a democracia do sistema","Isenção de impostos","Vender planos"], a:1, j:"Os conselhos servem para fiscalizar e guiar a gestão estatal (controle social)."},
+{d:"dificil", q:"Segundo as Diretrizes, a Saúde Bucal requer intersetorialidade. Um exemplo claro é:", o:["Cirurgia plástica nos dentes","Articulação com a política de Saneamento para garantir flúor na água potável","Comprar cadeiras modernas isoladas","Receitar antibióticos"], a:1, j:"A fluoretação das águas depende fortemente da companhia de saneamento básico."},
+{d:"dificil", q:"No Art 198, a diretriz 'atendimento integral, com prioridade para as atividades preventivas':", o:["Proíbe a cura","Veda a internação UTI","Significa que a prevenção é priorizada, mas sem prejuízo dos serviços assistenciais e curativos necessários","Não está na constituição"], a:2, j:"Prioriza a prevenção mas garante toda a assistência curativa exigida."},
+{d:"dificil", q:"O Conselho Nacional de Secretários de Saúde (CONASS) atua na esfera:", o:["Municipal","Estadual (reúne secretários estaduais)","Federal puramente política","Privada empresarial"], a:1, j:"O CONASS representa as Secretarias Estaduais de Saúde na governança."},
+{d:"dificil", q:"Como a hierarquização protege os Hospitais (Terciários)?", o:["Impedindo pobres de entrar","Filtrando e resolvendo casos simples na Atenção Básica (80% da demanda), evitando superlotação indevida nos hospitais","Dando mais remédios de graça","Não tem impacto nenhum"], a:1, j:"A rede básica absorve a demanda primária, deixando a alta complexidade apenas para casos reais."},
+{d:"dificil", q:"Segundo a Lei 8.080, ordenar a formação de RH em saúde serve para:", o:["Garantir altos lucros","Adequar os currículos de medicina/odontologia/enfermagem às necessidades reais de saúde do país (SUS)","Criar exames difíceis no CRM","Pagar impostos sindicalistas"], a:1, j:"O SUS tenta forçar as universidades a formarem profissionais voltados ao perfil do SUS e do Brasil."},
+{d:"dificil", q:"Qual princípio justifica tratar uma grávida diabética mais vezes ao mês que uma grávida sadia?", o:["Universalidade Plena","Direção Única","Equidade (necessidade maior = mais recursos)","Vigilância Sanitária"], a:2, j:"A Equidade calibra o recurso de acordo com a vulnerabilidade (risco) individual."},
+{d:"dificil", q:"Na CF, 'As instituições privadas poderão participar de forma complementar'. Se houver empate, quem ganha?", o:["Clínicas estéticas americanas","Entidades filantrópicas e as sem fins lucrativos têm preferência de contratação","Hospitais que pagam propina","Qualquer laboratório que fizer o menor preço leiloado"], a:1, j:"A Constituição decreta explícita preferência às filantrópicas."},
+{d:"dificil", q:"O que a Reforma Sanitária criticava nas 'Caixas de Aposentadoria e Pensões (CAPs/IAPs)' históricas?", o:["A falta de médicos rurais.","O modelo de mérito: a saúde atrelada unicamente ao trabalho/previdência, excluindo massas de desempregados.","A falta de dinheiro externo do FMI.","O foco preventivo exagerado."], a:1, j:"Crítica severa à segmentação social, onde só quem contribuía para a previdência tinha acesso à medicina."},
+{d:"dificil", q:"Em epidemiologia do Brasil Sorridente, o CPOD mede:", o:["Casos Possíveis de Ortodontia Diária.","Cárie, Perdidos e Obturados em Dentes (índice da OMS para mapear a doença cárie).","Código de Profilaxia Oncológica Dental.","Central de Próteses Odontológicas Distritais."], a:1, j:"CPO-D é o índice epidemiológico balizador das condições e metas de saúde bucal."},
+{d:"dificil", q:"Qual a posição do SUS sobre as medicinas alternativas (Práticas Integrativas)?", o:["Proibição sumária pelo CRM e leis federais.","São reconhecidas e incorporadas à rede (acupuntura, fitoterapia) dentro do conceito de integralidade.","Permitidas só no setor privado pagante.","Ignoradas pela Lei 8080."], a:1, j:"A Integralidade abarca outras racionalidades médicas validadas (Política PNPIC)."},
+{d:"dificil", q:"Segundo as diretrizes de 2004, o que significa a 'rutura com o modelo assistencial do programa incremental'?", o:["Parar de atender escolas públicas.","Sair do foco restrito em Escolares (onde ocorria as extrações sistemáticas em massa nos jovens sem cuidar do ciclo vital completo) para atender todas as faixas etárias.","Demissão de dentistas nas prefeituras.","Cobrança de mensalidades nas UBS."], a:1, j:"O antigo modelo incremental focava em crianças e ignorava gestantes, adultos e idosos (que acabavam mutilados)."},
+{d:"dificil", q:"Como a vigilância epidemiológica (VE) deve agir perante uma pandemia no SUS?", o:["Isolar o país sem critérios ou diagnósticos e focar em repasses financeiros para comprar asilos privados estaduais.","Prover informações atualizadas sobre a ocorrência e distribuição das doenças (determinantes) e recomendar medidas de controle/prevenção pertinentes na rede (Lei 8080).","Deletar o banco de dados.","Lavar as ruas com flúor e anestésicos sob comando do MS."], a:1, j:"A VE é definida pela Lei 8080 como conjunto de ações de detecção de alterações para recomendar proteção coletiva."},
+{d:"dificil", q:"Para o repasse 'fundo a fundo' da União ocorrer, os fundos municipais devem:", o:["Ser vinculados a bancos estrangeiros privados.","Ter aprovação do conselho regional de medicina local de base para liberar a verba do Fundo Nacional (FNS) por portaria única na receita municipal tributária estadual.","Funcionar como contas especiais, administradas pela Secretaria de Saúde, sob fiscalização obrigatória do respectivo Conselho de Saúde (Lei 8142).","Não precisar de conselhos."], a:2, j:"O repasse só existe pela estruturação administrativa dos fundos controlados pelos conselhos sob gestão do Executivo sanitário local."},
+{d:"dificil", q:"Por que a 'Inclusão da Prótese Dentária' foi um marco na Política Brasil Sorridente?", o:["Porque o Governo Federal assumiu o papel histórico das antigas clínicas e reduziu as cáries nas escolas municipais.","Porque o Brasil possuía milhões de idosos e adultos edêntulos (mutilados pelo sistema antigo) e não oferecia acesso público para a mastigação e estética básica.","Porque gerou lucros.","Porque os planos exigiram exclusão."], a:1, j:"A reabilitação pagou a imensa dívida social do Estado em relação às mutilações do modelo curativo excludente anterior."},
+{d:"dificil", q:"O princípio do SUS que impede a descontinuidade do cuidado do posto até a UTI é:", o:["Universalidade de acesso seletivo federal corporativo e hospitalocêntrico previdenciário do INSS rural da união governamental estatal militar.","Princípio da Descentralização da arrecadação tributária dos prefeitos paulistas da federação do CEBES histórico de 1980 sanitário.","A Integralidade articulada pela Hierarquização das linhas de cuidado e protocolos de referência e contrarreferência (garantia do trajeto na rede).","O princípio do mercado restrito."], a:2, j:"Integralidade em sua vertente macro-organizacional garante que o usuário transite da UBS até a UTI em fluxos coordenados de encaminhamento contínuo."},
+{d:"dificil", q:"Na lógica do modelo preventivo x curativo, as Diretrizes afirmam que (Revisão 2):", o:["Devem existir separados em prédios distintos.","As ações preventivas, educativas e de recuperação curativa são indissociáveis num mesmo processo de cuidado (Práxis única).","A cura deve ser abandonada para focar só na profilaxia teórica da saliva.","A prevenção não existe no SUS."], a:1, j:"A política moderna funde promoção e cura no mesmo encontro clínico."},
+{d:"dificil", q:"Qual a importância das plenárias da 8ª Conferência Nacional de Saúde para a política nacional? (Revisão)", o:["Anularam a atuação do MS.","Foram a base documental política e social que o Movimento da Reforma Sanitária utilizou para redigir a seção de seguridade social na Constituição de 1988.","Destruíram os postos de saúde de vacina infantil.","Não tiveram validade jurídica e falharam."], a:1, j:"A 8ª CNS foi a espinha dorsal política e técnica dos textos do constituinte de 1988 sobre o SUS público e universal."},
+{d:"dificil", q:"Se um hospital privado não tem leito SUS ele atende as regras do SUS?", o:["Nunca.","Sim, no quesito Vigilância Sanitária e regulamentação (Art 197), todas as ações privadas estão sob a tutela normativa do Estado (Anvisa, SUS).","Apenas se cobrar.","Apenas se for filantrópico."], a:1, j:"A relevância pública (CF 197) incide sobre TUDO em saúde, inclusive clínicas não conveniadas via vigilância sanitária e Alvarás."},
+{d:"dificil", q:"Na Saúde do Trabalhador, quem pode intervir para paralisar uma máquina que afeta a audição operária?", o:["Somente a OAB local.","O Ministério do Trabalho exclusivamente, proibindo o SUS.","As ações da Vigilância em Saúde do SUS (Lei 8080) intervêm nas condições e ambientes do trabalho.","Apenas o patrão da fábrica operária privada."], a:2, j:"A lei 8080 autoriza a VE e VS a auditar e intervir em ambientes de trabalho insalubres ativamente."},
+{d:"dificil", q:"Onde ocorre a discussão sobre repasses de verbas estaduais para os municípios de uma mesma região?", o:["Em sigilo com os prefeitos.","Nos fóruns de pactuação, como a CIB (Comissão Intergestores Bipartite) e sob regência e aprovação dos Conselhos de Saúde.","No senado e na câmara, com aprovação da OMS nas américas e de consórcios da iniciativa europeia centralizada curativista militar de gestão sanitária e hospitalar rural.","Apenas em Washington."], a:1, j:"As Comissões Intergestores e Conselhos pactuam as transferências regionais baseadas nas metas e indicadores de cada município."},
+{d:"dificil", q:"O que caracteriza a diretriz bucal de 'Acolhimento com Classificação de Risco' nas urgências?", o:["Atender primeiro quem chegou primeiro na fila, independente da doença orgânica ou da dor infecciosa severa aguda exposta pelo paciente em sofrimento biológico vital humano social e material local estrutural na sala de triagem básica de acolhimento do PSF.","Identificar na demanda espontânea (sem agendamento) quem corre risco biológico grave ou dor crônica (prioridade) frente a queixas estéticas e adiar procedimentos eletivos em favor da Equidade assistencial aguda no posto.","Rejeitar todos que não têm horário marcado, independente do sofrimento.","Dar prioridade para empresários na fila das cirurgias dos CREOs de referência regional de alta complexidade nos consórcios de Brasília intersetoriais federais integrados da união previdenciária."], a:1, j:"Classificação de risco quebra a 'ordem de chegada' para atender pela gravidade (Equidade frente ao sofrimento)."}
+];
 
-    // Para completar o array gerando 40 de cada com dados variados dos PDFs sem faltar (reduzindo código manual mas mantendo integridade dos dados, faremos um loop até chegar em 120 caso necessário, preenchendo as que faltam de forma sistêmica).
-    const addRemaining = () => {
-        let facilCount = db.filter(q => q.d === "facil").length;
-        let medioCount = db.filter(q => q.d === "medio").length;
-        let dificilCount = db.filter(q => q.d === "dificil").length;
+let questions = [];
+let idx = 0;
+let score = 0;
+let timerInt;
+let timeLeft = 60;
 
-        for (let i = facilCount; i < 40; i++) {
-            db.push({d:"facil", q:"(Extra) De acordo com as Diretrizes em Saúde Bucal, o planejamento de ações se baseia em?", o:["Exigências hospitalares.","Renda do dentista.","Epidemiologia e dados sobre o território.","Nada, é aleatório."], a:2, j:"O planejamento das ações baseia-se na epidemiologia e reconhecimento do território[cite: 5]."});
-        }
-        for (let i = medioCount; i < 40; i++) {
-            db.push({d:"medio", q:"(Extra) Na perspectiva sociológica, o que acentua a medicalização do cotidiano (Tavares)?", o:["Falta de leitos.","Culpabilização exclusiva de ONGs.","Transformar questões normais da vida (menopausa, envelhecimento) em esferas sob intervenção médica e controle de risco estrito de peritos biomédicos nas sociedades modernas reflexivas do capital e indústrias da saúde corporativa contemporânea no mercado ocidental de vida.","Apenas vacinação."], a:2, j:"Medicalização ocorre quando problemas humanos passam a ser mediados por diagnósticos e soluções de viés patológico na gestão da vida e estilos vitais[cite: 2]."});
-        }
-        for (let i = dificilCount; i < 40; i++) {
-            db.push({d:"dificil", q:"(Extra) Qual a principal diferença analítica entre o Relatório Black (1980) e as teses neoliberais (conservadoras) sobre desigualdade na saúde?", o:["Nenhuma, concordavam na biologia genética mutante hereditária da classe proletária européia inglesa da época moderna clássica no continente e periferia.","O Relatório evidenciou raízes materiais e estruturais da pobreza (habitação, saneamento e classe do capital no trabalho) enquanto os governos atribuíam o problema a maus hábitos culturais da pobreza do indivíduo da base isolado.","Enfatizou apenas a necessidade e falta de ortodontistas e clínicas dentárias no bairro das cidades sem água fluoretada no abastecimento industrial de rios sujos.","Defendeu a privatização integral como salvadora mágica da medicina curativista isolada nas clínicas elitizadas ocidentais ricas capitalizadas na elite da nação."], a:1, j:"Relatório Black apontou o fator socioestrutural material como a grande barreira na diferença de mortalidade da classe trabalhadora frente à elite, repudiando a falácia da liberdade de consumo como causa de morte pela pobreza no operário desempregado e sem teto, etc[cite: 1]."});
-        }
-    };
-    addRemaining();
-    // Verificando contagem de 40 por nível
-    // console.log(db.filter(q=>q.d==="facil").length, db.filter(q=>q.d==="medio").length, db.filter(q=>q.d==="dificil").length);
+function start(diff) {
+    questions = db.filter(q => q.d === diff).sort(() => Math.random() - 0.5);
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('quiz-screen').classList.remove('hidden');
+    idx = 0; score = 0;
+    load();
+}
 
-    let currentQuestions = [];
-    let currentQuestionIndex = 0;
-    let score = 0;
-    let timerInterval;
-    let timeLeft = 60;
-    let selectedLevel = "";
+function load() {
+    const q = questions[idx];
+    document.getElementById('prog').innerText = `Questão ${idx + 1} de 40`;
+    document.getElementById('question').innerText = q.q;
+    const opts = document.getElementById('opts');
+    opts.innerHTML = '';
+    q.o.forEach((opt, i) => {
+        const b = document.createElement('button');
+        b.className = 'option';
+        b.innerText = opt;
+        b.onclick = () => check(i);
+        opts.appendChild(b);
+    });
+    document.getElementById('just').style.display = 'none';
+    document.getElementById('next').classList.add('hidden');
+    startTimer();
+}
 
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-    }
+function startTimer() {
+    clearInterval(timerInt);
+    timeLeft = 60;
+    document.getElementById('timer').innerText = `00:${timeLeft}`;
+    timerInt = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').innerText = `00:${timeLeft < 10 ? '0'+timeLeft : timeLeft}`;
+        if(timeLeft <= 0) { clearInterval(timerInt); lock(false); }
+    }, 1000);
+}
 
-    function startQuiz(difficulty) {
-        selectedLevel = difficulty;
-        currentQuestions = db.filter(q => q.d === difficulty);
-        
-        // Embaralhar as questões
-        currentQuestions.sort(() => Math.random() - 0.5);
+function check(sel) {
+    clearInterval(timerInt);
+    const btns = document.getElementById('opts').querySelectorAll('.option');
+    btns.forEach((b, i) => {
+        b.disabled = true;
+        if(i === questions[idx].a) b.classList.add('correct');
+        else if(i === sel) b.classList.add('wrong');
+    });
+    if(sel === questions[idx].a) score++;
+    lock(true);
+}
 
-        document.getElementById('start-screen').classList.add('hidden');
-        document.getElementById('quiz-screen').classList.remove('hidden');
-        
-        currentQuestionIndex = 0;
-        score = 0;
-        loadQuestion();
-    }
+function lock(answered) {
+    const btns = document.getElementById('opts').querySelectorAll('.option');
+    btns.forEach(b => b.disabled = true);
+    const just = document.getElementById('just');
+    just.innerHTML = (answered ? "" : "<strong style='color:var(--err)'>Tempo Esgotado!</strong><br>") + questions[idx].j;
+    just.style.display = 'block';
+    document.getElementById('next').classList.remove('hidden');
+}
 
-    function startTimer() {
-        clearInterval(timerInterval);
-        timeLeft = 60;
-        updateTimerText();
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            updateTimerText();
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                handleTimeout();
-            }
-        }, 1000);
-    }
+function next() {
+    idx++;
+    if(idx < questions.length) load();
+    else end();
+}
 
-    function updateTimerText() {
-        const seconds = timeLeft < 10 ? '0' + timeLeft : timeLeft;
-        document.getElementById('timer-text').innerText = `00:${seconds}`;
-    }
-
-    function handleTimeout() {
-        const optionsContainer = document.getElementById('options-container');
-        const buttons = optionsContainer.querySelectorAll('.option');
-        buttons.forEach(btn => btn.disabled = true);
-        showJustification(false);
-    }
-
-    function loadQuestion() {
-        const qData = currentQuestions[currentQuestionIndex];
-        document.getElementById('progress-text').innerText = `Questão ${currentQuestionIndex + 1} de 40`;
-        document.getElementById('question-text').innerText = qData.q;
-        
-        const optionsContainer = document.getElementById('options-container');
-        optionsContainer.innerHTML = '';
-        
-        qData.o.forEach((option, index) => {
-            const btn = document.createElement('button');
-            btn.className = 'option';
-            btn.innerText = option;
-            btn.onclick = () => checkAnswer(index, btn);
-            optionsContainer.appendChild(btn);
-        });
-
-        document.getElementById('justification-container').style.display = 'none';
-        document.getElementById('next-btn').classList.add('hidden');
-        startTimer();
-    }
-
-    function checkAnswer(selectedIndex, btnElement) {
-        clearInterval(timerInterval);
-        const qData = currentQuestions[currentQuestionIndex];
-        const optionsContainer = document.getElementById('options-container');
-        const buttons = optionsContainer.querySelectorAll('.option');
-
-        buttons.forEach((btn, idx) => {
-            btn.disabled = true;
-            if (idx === qData.a) {
-                btn.classList.add('correct');
-            } else if (idx === selectedIndex) {
-                btn.classList.add('wrong');
-            }
-        });
-
-        if (selectedIndex === qData.a) {
-            score++;
-        }
-
-        showJustification(true);
-    }
-
-    function showJustification(answered) {
-        const qData = currentQuestions[currentQuestionIndex];
-        const container = document.getElementById('justification-container');
-        const textElement = document.getElementById('justification-text');
-        
-        let prefix = answered ? "" : "<strong style='color:var(--error-color);'>Tempo esgotado!</strong><br><br>";
-        textElement.innerHTML = prefix + qData.j;
-        container.style.display = 'block';
-        
-        document.getElementById('next-btn').classList.remove('hidden');
-    }
-
-    function nextQuestion() {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < currentQuestions.length) {
-            loadQuestion();
-        } else {
-            showResult();
-        }
-    }
-
-    function showResult() {
-        document.getElementById('quiz-screen').classList.add('hidden');
-        document.getElementById('result-screen').classList.remove('hidden');
-        document.getElementById('score-text').innerText = score;
-        document.getElementById('level-finished').innerText = selectedLevel.toUpperCase();
-    }
+function end() {
+    document.getElementById('quiz-screen').classList.add('hidden');
+    document.getElementById('res-screen').classList.remove('hidden');
+    document.getElementById('score').innerText = score;
+}
 </script>
-
 </body>
 </html>
